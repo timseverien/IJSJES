@@ -1,0 +1,24 @@
+---
+interface Post {
+	number: number;
+	title: string;
+	url: string;
+}
+
+export interface Props {
+	posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+<div>
+	{posts.map((p: Post) => (
+		<article>
+			<a href={p.url}>
+				<!-- <span class="number">#{p.number}</span> -->
+				<h2 class="title">{p.title}</h2>
+			</a>
+		</article>
+	))}
+</div>

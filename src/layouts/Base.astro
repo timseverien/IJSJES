@@ -1,0 +1,34 @@
+---
+import 'modern-css-reset';
+import '@styles/settings.css';
+import '@styles/base.css';
+
+function getTitle() {
+	// Blog posts
+	if (Astro.props.content?.title) {
+		return Astro.props.content.title;
+	}
+
+	// Pages
+	if (Astro.props.content?.astro) {
+		return Astro.props.content.astro.headings.find(
+			(h: { depth: number }) => h.depth === 1,
+		)?.text;
+	}
+
+	return null;
+}
+
+const title = getTitle() || 'Tips for intermediate JavaScript developers';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>IJSJES - {title}</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

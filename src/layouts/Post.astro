@@ -1,0 +1,52 @@
+---
+import Layout from '@layouts/Default.astro';
+import Flow from '@components/Flow.astro';
+
+const { content } = Astro.props;
+---
+
+<Layout {...Astro.props}>
+	<main>
+		<Flow class="post">
+			<h1>{content.title}</h1>
+			<slot />
+		</Flow>
+	</main>
+</Layout>
+
+<style>
+	.post :global(a) {
+		color: var(--color-secondary);
+		display: inline-block;
+		position: relative;
+	}
+
+	.post :global(a::before) {
+		display: block;
+		content: '';
+
+		background-color: var(--color-accent);
+		border-radius: 0.125em;
+
+		position: absolute;
+		left: -0.25em;
+		top: 0;
+		right: -0.25em;
+		bottom: 0;
+		z-index: -1;
+
+		transition: transform 0.2s;
+		transform: rotate(1deg);
+		will-change: transform;
+	}
+
+	.post :global(a:hover) {
+		color: var(--color-accent);
+		text-decoration: underline;
+	}
+
+	.post :global(a:hover::before) {
+		transform: rotate(-1deg);
+		background-color: var(--color-secondary);
+	}
+</style>

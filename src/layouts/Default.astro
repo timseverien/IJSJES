@@ -1,0 +1,15 @@
+---
+import Layout from '@layouts/Base.astro';
+import Header from '@components/Header.astro';
+---
+
+<Layout {...Astro.props}>
+	<Header />
+	<div class="content"><slot /></div>
+</Layout>
+
+<style>
+	.content {
+		margin: 1em;
+	}
+</style>

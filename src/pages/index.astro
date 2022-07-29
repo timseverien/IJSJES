@@ -1,0 +1,20 @@
+---
+import Layout from '@layouts/Default.astro';
+
+import PostList from '@components/PostList.astro';
+import VisuallyHidden from '@components/VisuallyHidden.astro';
+
+const posts = (await Astro.glob('./posts/*.{md,mdx}'))
+	.filter((p) => !p.frontmatter.draft)
+	.map((p) => ({
+		number: p.frontmatter.number,
+		title: p.frontmatter.title,
+		url: p.url,
+	}))
+	.reverse();
+---
+
+<Layout>
+	<VisuallyHidden component="h1">Intermediate JavaScript Tips</VisuallyHidden>
+	<PostList posts={posts} />
+</Layout>

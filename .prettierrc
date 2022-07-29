@@ -1,0 +1,13 @@
+{
+	"editorconfig": true,
+	"semi": true,
+	"singleQuote": true,
+	"trailingComma": "all",
+	"overrides": [
+		{
+			"files": [
+				"*.astro"
+			]
+		}
+	]
+}
