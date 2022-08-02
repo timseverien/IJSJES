@@ -20,3 +20,14 @@ export const loadPosts = async () => {
 				a.frontmatter.pubDate.getTime() - b.frontmatter.pubDate.getTime(),
 		);
 };
+
+export const getImageAbsoluteUrl = (
+	astroSiteUrl: URL,
+	imagePath: string,
+): URL => {
+	const url = new URL(astroSiteUrl);
+
+	url.pathname = imagePath;
+
+	return url;
+};

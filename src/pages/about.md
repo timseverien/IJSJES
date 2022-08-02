@@ -1,5 +1,7 @@
 ---
 layout: '@layouts/Page.astro'
+title: About IJSJES
+description: Everything you need to know about IJSJES
 ---
 
 # About IJSJES
@@ -10,7 +12,7 @@ My life goal is to help people succeed. I can do that through blogging about my 
 
 ## What a silly name!
 
-Yes. <span lang="nl">IJsjes</span> is the Dutch word for popsicles. It’s ponounced kind of like ice-yus. Why did I choose this? Well, it has the letters JS in it. Many more Dutch words include these letters and in these order, but <span lang="nl">ijsjes</span> had the best vibes by far. More than <span lang="nl">lijst</span> (list), <span lang="nl">prijs</span> (price and prize), <span lang="nl">bewijs</span> (proof), <span lang="nl">wijs</span> (wise), etc. So yeah, ice-yus. But I’ll allow eye-JS-yus.
+Yes. <span lang="nl">IJsjes</span> is the Dutch word for popsicles. It’s ponounced kind of like ice-yus. Why did I choose this? Well, it has the letters JS in it. Many more Dutch words include these letters and in these order, but <span lang="nl">ijsjes</span> had the best vibes by far. More than <span lang="nl">lijst</span> (list), <span lang="nl">prijs</span> (price and prize), <span lang="nl">bewijs</span> (proof), <span lang="nl">wijs</span> (wise), etc. So yeah, ice-yus.
 
 ## The future
 

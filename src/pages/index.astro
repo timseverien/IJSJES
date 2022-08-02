@@ -3,15 +3,23 @@ import DefaultLayout from '@layouts/Default.astro';
 import { loadPosts } from '@functions/posts';
 import { PostList } from '@components/PostList';
 import { VisuallyHidden } from '@components/VisuallyHidden';
+import { DESCRIPTION, TITLE } from 'src/site';
 
 const posts = await loadPosts();
+
+const pageTitle = `${DESCRIPTION} - ${TITLE}`;
+
+const schema = {
+	'@context': 'https://schema.org',
+	'@type': 'Blog',
+	headline: pageTitle,
+	mainEntityOfPage: { '@type': 'WebPage', '@id': Astro.url },
+	name: pageTitle,
+	url: Astro.url,
+};
 ---
 
-<DefaultLayout
-	context={{
-		requestUrl: Astro.request.url,
-	}}
->
+<DefaultLayout schema={schema}>
 	<VisuallyHidden>
 		<h1>Intermediate JavaScript Tips</h1>
 	</VisuallyHidden>

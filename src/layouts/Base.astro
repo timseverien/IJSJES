@@ -8,7 +8,7 @@ import { DESCRIPTION, TITLE } from 'src/site';
 const { description, image, schema, title } = Astro.props;
 const pageTitle = title ? `${title} - ${TITLE}` : `${DESCRIPTION} - ${TITLE}`;
 const pageDescription = description || DESCRIPTION;
-const pageImage = image || '';
+const pageImage = image || null;
 ---
 
 <html lang="en">
@@ -20,10 +20,10 @@ const pageImage = image || '';
 
 		<title>{pageTitle}</title>
 
-		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:site" content="@ijsjes_dev" />
 		<meta property="og:description" content={pageDescription} />
-		<meta property="og:image" content={pageImage} />
+		{pageImage && <meta property="og:image" content={pageImage} />}
 		<meta property="og:locale" content="en" />
 		<meta property="og:site_name" content={TITLE} />
 		<meta property="og:title" content={pageTitle} />

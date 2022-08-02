@@ -1,21 +1,21 @@
 {
   "compilerOptions": {
-    "isolatedModules": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact",
+    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
     "target": "ESNext",
-    "types": ["astro/client"],
-    "baseUrl": ".",
     "paths": {
       "@components/*": ["./src/components/*"],
       "@functions/*": ["./src/functions/*"],
       "@layouts/*": ["./src/layouts/*"],
       "@stores/*": ["src/stores/*"],
       "@styles/*": ["./src/styles/*"]
-    },
-    "typeRoots": ["./src/types"]
+    }
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "esModuleInterop": true,
+      "module": "commonjs"
+    }
   }
 }

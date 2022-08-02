@@ -3,10 +3,15 @@ import BaseLayout from '@layouts/Base.astro';
 import { Footer } from '@components/Footer';
 import { Header } from '@components/Header';
 
-const { schema } = Astro.props;
+const { description, image, title, schema } = Astro.props;
 ---
 
-<BaseLayout schema={schema}>
+<BaseLayout
+	description={description}
+	image={image}
+	schema={schema}
+	title={title}
+>
 	<Header requestUrl={Astro.url} />
 
 	<div class="content">

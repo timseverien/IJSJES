@@ -1,24 +1,40 @@
 ---
 import DefaultLayout from '@layouts/Default.astro';
+import { getImageAbsoluteUrl } from '@functions/posts';
 import { ContentBlock } from '@components/ContentBlock';
 import { Flow } from '@components/Flow';
-import { TITLE } from 'src/site';
+import { SCHEMA_AUTHOR } from 'src/site';
 
 const { content } = Astro.props;
-const pageTitle = `${content.title} - ${TITLE}`;
+const postImage = getImageAbsoluteUrl(Astro.site, content.image);
 
 const schema = {
 	'@context': 'https://schema.org',
-	'@type': 'Blog',
-	// image: 'https://timseverien.com/assets/images/social.png',
-	headline: pageTitle,
-	mainEntityOfPage: { '@type': 'WebPage', '@id': Astro.url },
-	name: pageTitle,
+	'@type': 'BlogPosting',
+
+	alternativeHeadline: content.description,
+	author: SCHEMA_AUTHOR,
+	dateModified: content.pubDate,
+	datePublished: content.pubDate,
+	headline: content.title,
+	image: postImage,
+	name: content.title,
+	publisher: SCHEMA_AUTHOR,
 	url: Astro.url,
+
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': Astro.url,
+	},
 };
 ---
 
-<DefaultLayout schema={schema}>
+<DefaultLayout
+	description={content.description}
+	image={postImage}
+	schema={schema}
+	title={content.title}
+>
 	<main>
 		<Flow component={ContentBlock}>
 			<h1>{content.title}</h1>

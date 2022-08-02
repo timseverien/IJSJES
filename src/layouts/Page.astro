@@ -2,8 +2,22 @@
 import DefaultLayout from '@layouts/Default.astro';
 import { ContentBlock } from '@components/ContentBlock';
 import { Flow } from '@components/Flow';
+import { DESCRIPTION, TITLE } from 'src/site';
+
+const { content } = Astro.props;
+const pageTitle = content.title;
+const pageDescription = content.description;
+
+const schema = {
+	'@context': 'https://schema.org',
+	'@type': 'Blog',
+	headline: pageTitle || TITLE,
+	mainEntityOfPage: { '@type': 'WebPage', '@id': Astro.url },
+	name: pageTitle || TITLE,
+	url: Astro.url,
+};
 ---
 
-<DefaultLayout>
+<DefaultLayout schema={schema} title={pageTitle} description={pageDescription}>
 	<Flow component={ContentBlock}><slot /></Flow>
 </DefaultLayout>
