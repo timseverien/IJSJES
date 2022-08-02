@@ -1,0 +1,7 @@
+.flow {
+	--content-width: 50ch;
+}
+
+.flow :global(> * + *) {
+	margin-top: 1em;
+}

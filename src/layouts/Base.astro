@@ -1,34 +1,45 @@
 ---
+/* prettier-ignore */
 import 'modern-css-reset';
-import '@styles/settings.css';
 import '@styles/base.css';
+import '@styles/settings.css';
+import { DESCRIPTION, TITLE } from 'src/site';
 
-function getTitle() {
-	// Blog posts
-	if (Astro.props.content?.title) {
-		return Astro.props.content.title;
-	}
-
-	// Pages
-	if (Astro.props.content?.astro) {
-		return Astro.props.content.astro.headings.find(
-			(h: { depth: number }) => h.depth === 1,
-		)?.text;
-	}
-
-	return null;
-}
-
-const title = getTitle() || 'Tips for intermediate JavaScript developers';
+const { description, image, schema, title } = Astro.props;
+const pageTitle = title ? `${title} - ${TITLE}` : `${DESCRIPTION} - ${TITLE}`;
+const pageDescription = description || DESCRIPTION;
+const pageImage = image || '';
 ---
 
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<title>IJSJES - {title}</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta name="description" content={pageDescription} />
+		<meta name="theme-color" content="#fefefe" />
+
+		<title>{pageTitle}</title>
+
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:site" content="@ijsjes_dev" />
+		<meta property="og:description" content={pageDescription} />
+		<meta property="og:image" content={pageImage} />
+		<meta property="og:locale" content="en" />
+		<meta property="og:site_name" content={TITLE} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+
+		<link rel="alternate" type="application/atom+xml" href="/rss.xml" />
+		<link rel="apple-touch-icon" href="/favicon.png" />
+		<link rel="icon" sizes="192x192" href="/favicon.png" />
 	</head>
+
 	<body>
 		<slot />
+
+		{schema && (
+			<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+		)}
 	</body>
 </html>

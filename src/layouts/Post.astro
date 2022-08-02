@@ -1,52 +1,28 @@
 ---
-import Layout from '@layouts/Default.astro';
-import Flow from '@components/Flow.astro';
+import DefaultLayout from '@layouts/Default.astro';
+import { ContentBlock } from '@components/ContentBlock';
+import { Flow } from '@components/Flow';
+import { TITLE } from 'src/site';
 
 const { content } = Astro.props;
+const pageTitle = `${content.title} - ${TITLE}`;
+
+const schema = {
+	'@context': 'https://schema.org',
+	'@type': 'Blog',
+	// image: 'https://timseverien.com/assets/images/social.png',
+	headline: pageTitle,
+	mainEntityOfPage: { '@type': 'WebPage', '@id': Astro.url },
+	name: pageTitle,
+	url: Astro.url,
+};
 ---
 
-<Layout {...Astro.props}>
+<DefaultLayout schema={schema}>
 	<main>
-		<Flow class="post">
+		<Flow component={ContentBlock}>
 			<h1>{content.title}</h1>
 			<slot />
 		</Flow>
 	</main>
-</Layout>
-
-<style>
-	.post :global(a) {
-		color: var(--color-secondary);
-		display: inline-block;
-		position: relative;
-	}
-
-	.post :global(a::before) {
-		display: block;
-		content: '';
-
-		background-color: var(--color-accent);
-		border-radius: 0.125em;
-
-		position: absolute;
-		left: -0.25em;
-		top: 0;
-		right: -0.25em;
-		bottom: 0;
-		z-index: -1;
-
-		transition: transform 0.2s;
-		transform: rotate(1deg);
-		will-change: transform;
-	}
-
-	.post :global(a:hover) {
-		color: var(--color-accent);
-		text-decoration: underline;
-	}
-
-	.post :global(a:hover::before) {
-		transform: rotate(-1deg);
-		background-color: var(--color-secondary);
-	}
-</style>
+</DefaultLayout>

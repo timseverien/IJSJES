@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "isolatedModules": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
     "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -9,8 +11,11 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["./src/components/*"],
+      "@functions/*": ["./src/functions/*"],
       "@layouts/*": ["./src/layouts/*"],
+      "@stores/*": ["src/stores/*"],
       "@styles/*": ["./src/styles/*"]
-    }
+    },
+    "typeRoots": ["./src/types"]
   }
 }

@@ -8,13 +8,18 @@
     "build": "astro build",
     "preview": "astro preview"
   },
-  "devDependencies": {
-    "@astrojs/mdx": "^0.3.1",
-    "astro": "^1.0.0-rc.1",
-    "json5": "^2.2.1",
-    "prettier-plugin-astro": "^0.1.2"
-  },
   "dependencies": {
     "modern-css-reset": "^1.4.0"
+  },
+  "devDependencies": {
+    "@astrojs/mdx": "^0.3.1",
+    "@astrojs/preact": "^0.5.2",
+    "@astrojs/rss": "^0.2.2",
+    "@trivago/prettier-plugin-sort-imports": "^3.3.0",
+    "astro": "^1.0.0-rc.1",
+    "json5": "^2.2.1",
+    "preact": "^10.10.0",
+    "prettier-plugin-astro": "^0.1.2",
+    "prettier-plugin-import-sort": "^0.0.7"
   }
 }

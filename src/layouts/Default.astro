@@ -1,12 +1,19 @@
 ---
-import Layout from '@layouts/Base.astro';
-import Header from '@components/Header.astro';
+import BaseLayout from '@layouts/Base.astro';
+import { Footer } from '@components/Footer';
+import { Header } from '@components/Header';
+
+const { schema } = Astro.props;
 ---
 
-<Layout {...Astro.props}>
-	<Header />
-	<div class="content"><slot /></div>
-</Layout>
+<BaseLayout schema={schema}>
+	<Header requestUrl={Astro.url} />
+
+	<div class="content">
+		<slot />
+		<Footer />
+	</div>
+</BaseLayout>
 
 <style>
 	.content {

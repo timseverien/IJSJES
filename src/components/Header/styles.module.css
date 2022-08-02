@@ -1,0 +1,36 @@
+.header {
+	--header-height: 4em;
+
+	display: flex;
+	flex-direction: row;
+	gap: 1em;
+	margin-block-end: var(--step-5);
+
+	text-transform: uppercase;
+}
+
+.logo {
+	height: var(--header-height);
+	max-width: none;
+	width: calc(222 / 96 * var(--header-height));
+}
+
+.navigationList {
+	display: flex;
+	height: var(--header-height);
+	padding: 0;
+	margin: 0;
+	flex-direction: row;
+	gap: 1em;
+	justify-content: center;
+	align-items: center;
+}
+
+.navigationList a {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.navigationList a[data-state-active] {
+	text-decoration: underline;
+}
