@@ -1,0 +1,25 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[dev]
+	command = "npm run preview"
+
+[[headers]]
+	for = "/*"
+	[headers.values]
+		Content-Security-Policy = "default-src 'self'; style-src 'unsafe-inline' 'self';"
+		Feature-Policy = "accelerometer 'none'; ambient-light-sensor 'none'; autoplay 'none'; battery 'none'; camera 'none'; clipboard-read 'none'; clipboard-write 'none'; conversion-measurement 'none'; cross-origin-isolated 'none'; display-capture 'none'; document-domain 'none'; encrypted-media 'none'; execution-while-not-rendered 'none'; execution-while-out-of-viewport 'none'; focus-without-user-activation 'none'; fullscreen 'none'; gamepad 'none'; geolocation 'none'; gyroscope 'none'; hid 'none'; idle-detection 'none'; interest-cohort 'none'; magnetometer 'none'; microphone 'none'; midi 'none'; navigation-override 'none'; payment 'none'; picture-in-picture 'none'; publickey-credentials-get 'none'; screen-wake-lock 'none'; serial 'none'; speaker-selection 'none'; sync-script 'none'; sync-xhr 'none'; trust-token-redemption 'none'; usb 'none'; vertical-scroll 'none'; web-share 'none'; xr-spatial-tracking 'none';"
+		Permissions-Policy = "accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), clipboard-read=(), clipboard-write=(), conversion-measurement=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), focus-without-user-activation=(), fullscreen=(), gamepad=(), geolocation=(), gyroscope=(), hid=(), idle-detection=(), interest-cohort=(), magnetometer=(), microphone=(), midi=(), navigation-override=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), speaker-selection=(), sync-script=(), sync-xhr=(), trust-token-redemption=(), usb=(), vertical-scroll=(), web-share=(), xr-spatial-tracking=()"
+		Referrer-Policy = "same-origin"
+		Server = ""
+		Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options = "nosniff"
+		X-Frame-Options = "SAMEORIGIN"
+		X-Powered-By = ""
+
+[[headers]]
+	for = "/*.{css,jpg,js,png,svg}"
+	[headers.values]
+		Cache-Control = "public, max-age=604800, immutable"
+		ETag = ""
