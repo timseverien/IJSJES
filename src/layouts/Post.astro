@@ -6,7 +6,10 @@ import { Flow } from '@components/Flow';
 import { SCHEMA_AUTHOR } from 'src/site';
 
 const { content } = Astro.props;
-const postImage = getImageAbsoluteUrl(Astro.site, content.image);
+
+const postImage = content.image
+	? getImageAbsoluteUrl(Astro.site, content.image)
+	: getImageAbsoluteUrl(Astro.site, `${content.url}/social-image.jpg`);
 
 const schema = {
 	'@context': 'https://schema.org',

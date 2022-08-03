@@ -77,7 +77,7 @@ function createFont(fontFamily: string) {
 const DEBUG = false;
 const IMAGE_SPLIT_X = 459 / 1200;
 const FONT_LINE_HEIGHT = 0.8;
-const TEXT_MARGIN = 80;
+const TEXT_MARGIN_X = 80;
 
 export function generateSocialImage(
 	context: CanvasRenderingContext2D,
@@ -96,10 +96,12 @@ export function generateSocialImage(
 		fontFamily: string;
 	},
 ) {
+	const textMarginY = 0.25 * context.canvas.height;
 	const imageSplitX = Math.round(IMAGE_SPLIT_X * context.canvas.width);
-	const textHeightMax = context.canvas.height - 2 * TEXT_MARGIN;
-	const textWidth = context.canvas.width - imageSplitX - 2 * TEXT_MARGIN;
-	const textX = imageSplitX + TEXT_MARGIN;
+
+	const textHeightMax = context.canvas.height - 2 * textMarginY;
+	const textWidth = context.canvas.width - imageSplitX - 2 * TEXT_MARGIN_X;
+	const textX = imageSplitX + TEXT_MARGIN_X;
 
 	context.fillStyle = designTokens.colorAccent;
 	context.fillRect(0, 0, context.canvas.width, context.canvas.height);
