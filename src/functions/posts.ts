@@ -15,10 +15,12 @@ export const loadPosts = async () => {
 
 	return postsUnsorted
 		.filter((p) => !p.frontmatter.draft)
-		.sort(
-			(a, b) =>
-				a.frontmatter.pubDate.getTime() - b.frontmatter.pubDate.getTime(),
-		);
+		.sort((a, b) => {
+			const aDate = new Date(a.frontmatter.pubDate);
+			const bDate = new Date(b.frontmatter.pubDate);
+
+			return aDate > bDate ? -1 : 1;
+		});
 };
 
 export const getImageAbsoluteUrl = (
