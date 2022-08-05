@@ -16,7 +16,7 @@ if (product.isInStock) {
 }
 ```
 
-So elegant, don’t you think? There are cases, however, where we can use alternatives. There’s opportunity for endless debate which methods are suitable for which situations. Let’s not go there and just learn about the options we’re given.
+So elegant, don’t you think? There are cases, however, where we can use alternatives. There’s an opportunity for endless debate about which methods are suitable for which situations. Let’s not go there and just learn about the options we’re given.
 
 ## 1. Switch statement
 
@@ -45,7 +45,7 @@ switch (stockInformation.state) {
 
 At first glance, this looks like an if…else but with more lines of code. There are minor differences that make it interesting.
 
-First, there’s readability. If we have an if…else with many `else if` blocks, we’d have to repeat the condition `stockInformation.state === 'SOME_VALUE'` many times. Repetition isn’t neccisarily bad, but because an if…else can contain complex conditions, they’re relatively hard to scan. Instead, they have to be read. As a switch has the equality check built-in, they’re much more suitable for scanning. Compare the last code example with this functionally equivalent code:
+First, there’s readability. If we have an if…else with many `else if` blocks, we’d have to repeat the condition `stockInformation.state === 'SOME_VALUE'` many times. Repetition isn’t necessarily bad, but because an if…else can contain complex conditions, they’re relatively hard to scan. Instead, they have to be read. As a switch has the equality check built-in, they’re much more suitable for scanning. Compare the last code example with this functionally equivalent code:
 
 ```js
 if (stockInformation.state === 'COMING_SOON') {
@@ -61,7 +61,7 @@ if (stockInformation.state === 'COMING_SOON') {
 
 Note that the `default` case is similar to the last `else` block of an if…else statement.
 
-Take note of the `break` statement in the switch from earlier. You may recall this is also used to terminate loops. In this case, it breaks out the switch as it’ll continue to check the next clauses otherwise. It’s a good habit to add `break`s by default and remove them when needed.
+Take note of the `break` statement in the switch from earlier. You may recall this is also used to terminate loops. In this case, it breaks out the switch, as it’ll continue to check the next clauses otherwise. It’s a good habit to add `break`s by default and remove them when needed.
 
 Omitting the `break` statement causes a so-called fall-through, and they can be quite useful. Consider the following example:
 
@@ -105,7 +105,7 @@ switch (true) {
 }
 ```
 
-I’m using fall-through (i.e. ommitted `break`) so both cases are potentially executed. Note that the value passed to the switch is `true`, and the `case` conditions contain comparison expressions (e.g. `a > b`). Given the `product` and `order`, the switch essentialy gets two `case true:` clauses, and `true === true`, so both cases get executed. The switch above is equivalent to _two_ if…else statements:
+I’m using fall-through (i.e. omitted `break`) so both cases are potentially executed. Note that the value passed to the switch is `true`, and the `case` conditions contain comparison expressions (e.g. `a > b`). Given the `product` and `order`, the switch essentially gets two `case true:` clauses, and `true === true`, so both cases get executed. The switch above is equivalent to _two_ if…else statements:
 
 ```js
 if (product.stockCount > 0) {
@@ -117,7 +117,7 @@ if (order.size > product.stockCount) {
 }
 ```
 
-Given the improved scanability of switches, I like to use them for long lists of equality checks. Fall-through can be also very useful, although I don’t use it that often. The last example, where we use comparison expressions and fallthrough, does requires some practise to both interpret and to conjure up, but can be useful from time to time.
+Given the improved scannability of switches, I like to use them for long lists of equality checks. Fall-through can also be very useful, although I don’t use it that often. The last example, where we use comparison expressions and fall-through, does require some practice to both interpret and conjure up, but can be useful from time to time.
 
 ## 2. Dictionary/map/object or list/array lookup
 
@@ -172,7 +172,7 @@ showMonthlyMessage[month]();
 ```
 <!-- prettier-ignore-end -->
 
-Empty items in a list, however, are a bit unelegant. In such cases, it’s probably better to use an object or `Map`. Here’s an example of the latter:
+Empty items in a list, however, are a bit inelegant. In such cases, it’s probably better to use an object or `Map`. Here’s an example of the latter:
 
 ```js
 const showMonthlyMessage = new Map([
@@ -189,17 +189,17 @@ if (showMonthlyMessage.has(month)) {
 
 ## 3. binary logic operators
 
-Once upon a time, binary logic operators (e.g. `&&` and `||`) were all the hype until it wasn’t. Nowadays, it’s commonly used in [React](https://reactjs.org)’s JavaScript syntax extension, [JSX](https://reactjs.org/docs/introducing-jsx.html), which is available in various contexts outside React. I’m sure it’s confusing to non-JavaScript developers, but it’s actually pretty powerful. It requires a little bit of JavaScript theory to understand — allow me to explain.
+Once upon a time, binary logic operators (e.g. `&&` and `||`) were all the hype, until it wasn’t. Nowadays, it’s commonly used in [React](https://reactjs.org)’s JavaScript syntax extension, [JSX](https://reactjs.org/docs/introducing-jsx.html), which is available in various contexts outside React. I’m sure it’s confusing to non-JavaScript developers, but it’s actually pretty powerful. It requires a bit of JavaScript theory to understand — allow me to explain.
 
-JavaScript uses [type coersion](https://developer.mozilla.org/en-US/docs/Glossary/Type_coercion) to allow developers to compare two values of different types (e.g. `42 == '42'`). This can behave somewhat unexpected and causes both [laughter](https://www.destroyallsoftware.com/talks/wat) and cries. Binary logic operators (e.g. `&&` and `||`) are used to check whether multiple boolean values meet a criteria, but when given non-booleans, JavaScript ceorces them into booleans. Typically, we refer to non-boolean values as _truthy_ and _falsy_ values, instead of `true` and `false`. For example, `0` is falsy, `1` is truthy, `null` is falsy and `{}` is truthy. So how does this help us rewrite if-statements?
+JavaScript uses [type coercion](https://developer.mozilla.org/en-US/docs/Glossary/Type_coercion) to allow developers to compare two values of different types (e.g. `42 == '42'`). This can behave somewhat unexpected and causes both [laughter](https://www.destroyallsoftware.com/talks/wat) and cries. Binary logic operators (e.g. `&&` and `||`) are used to check whether multiple boolean values meet criteria, but when given non-booleans, JavaScript coerces them into booleans. Typically, we refer to non-boolean values as _truthy_ and _falsy_ values, instead of `true` and `false`. For example, `0` is falsy, `1` is truthy, `null` is falsy and `{}` is truthy. So, how does this help us rewrite if-statements?
 
-There’s another piece to the puzzle here, which is that parts of an expression with a logic operator may not be evaluated entirely. Looking at `a && b` and `a || b`, there are two values: one on the left-hand side, and one on the right-hand side of the operator. JavaScript starts with evaluating the left-hand side and skips the right-hand side when the left-hand side already settles the condition.
+There’s another piece to the puzzle here, which is that parts of an expression with a logic operator may not be evaluated entirely. Looking at `a && b` and `a || b`, there are two values: one on the left-hand side, and one on the right-hand side of the operator. JavaScript starts evaluating the left-hand side and skips the right-hand side when the left-hand side alone settles the condition.
 
-Considering `a && b`, the value `a` determines whether `b` gets evaluated. If `a` is truthy, `b` needs to be checked to determine both `a` and `b` is `true`. However, when `a` is falsy, the condition will be false regardless of the value of `b` and can be ignored.
+Considering `a && b`, the value `a` determines whether `b` gets evaluated. If `a` is truthy, `b` needs to be checked to determine whether both `a` and `b` are `true`. However, when `a` is falsy, the condition will be false regardless of the value of `b` and can be ignored.
 
 For `a || b`, it’s the other way around. If `a` is true, we already know this expression will yield `true` and thus `b` isn’t evaluated.
 
-This behaviour creates interesting opportunities to chain functions calls with the logic operators acting like gates, as they’re able to continue and terminate evaluation based on the left-hand value. Consider this code:
+This behaviour creates interesting opportunities to chain function calls with the logic operators acting like gates, as they’re able to continue and terminate evaluation based on the left-hand value. Consider this code:
 
 ```js
 isProductInStock(product) && orderProduct(product);
@@ -213,7 +213,7 @@ if (isProductInStock(product)) {
 }
 ```
 
-We can chain binary logic operators which we can use to chain values and functions that are evaluated until it hits a falsy value.
+We can chain binary logic operators, which we can use to chain values and functions that are evaluated until it hits a falsy value.
 
 ```js
 isProduct(product) &&
@@ -286,7 +286,7 @@ try {
 
 If you think this is an awful amount of code that we could’ve written as an if…else, you’re right, but there are benefits to this.
 
-Imagine your codebase is big and complex, and the check whether a product is in stock is several functions deep. If we’d do our error handling in the top function, we’d have the pass the success state all the way down. For example:
+Imagine your codebase is big and complex, and the check whether a product is in stock is several functions deep. If we’d do our error handling in the top function, we’d have to pass the success state all the way down. For example:
 
 <!-- prettier-ignore-start -->
 ```js
@@ -339,6 +339,6 @@ Admittedly, this example is a bit tailored to make a point: there are moments wh
 
 ## Conclusion
 
-You’ve just seen there are many ways to conditionally run code, each with pros as cons. There’s no silver bullet here, as there rarely are. Instead, think of it as having more tools in your toolchain.
+You’ve just seen there are many ways to conditionally run code, each with pros and cons. There’s no silver bullet here, as there rarely are. Instead, think of it as having more tools in your toolchain.
 
 So, how do you pick? Always go for the option that’s easy to scan or read, which quite often is the least flexible option. When in doubt, it’s okay to write two or three versions of the same code and pick whichever appears easier to understand. Over time, you’ll grow an intuition for it.
