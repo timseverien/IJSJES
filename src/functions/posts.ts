@@ -10,7 +10,7 @@ export interface Post {
 }
 
 export const loadPosts = async () => {
-	const files = import.meta.glob<Post>('../pages/posts/*.{md,mdx}');
+	const files = import.meta.glob<Post>('../pages/posts/*.md');
 	const postsUnsorted = await Promise.all(Object.values(files).map((f) => f()));
 
 	return postsUnsorted
