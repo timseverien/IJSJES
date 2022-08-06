@@ -1,4 +1,5 @@
 import { FunctionalComponent, JSX } from 'preact';
+import { Icon } from '@components/Icon';
 import ImageLogo from '../../assets/logo.svg';
 import styles from './styles.module.css';
 
@@ -26,7 +27,7 @@ export const Header: FunctionalComponent<Props> = ({ requestUrl }) => {
 				/>
 			</a>
 
-			<nav>
+			<nav class={styles.navigation}>
 				<ul class={styles.navigationList} role="list">
 					{links.map((link) => (
 						<li>
@@ -35,6 +36,12 @@ export const Header: FunctionalComponent<Props> = ({ requestUrl }) => {
 							</a>
 						</li>
 					))}
+
+					<li class={styles.navigationListItemEnd}>
+						<a href="/rss.xml">
+							<Icon path="/images/icons/rss.svg" alt="RSS" />
+						</a>
+					</li>
 				</ul>
 			</nav>
 		</header>

@@ -15,6 +15,10 @@
 	width: calc(222 / 96 * var(--header-height));
 }
 
+.navigation {
+	flex-grow: 1;
+}
+
 .navigationList {
 	display: flex;
 	height: var(--header-height);
@@ -22,8 +26,12 @@
 	margin: 0;
 	flex-direction: row;
 	gap: 1em;
-	justify-content: center;
 	align-items: center;
+}
+
+.navigationListItemEnd {
+	margin-inline-start: auto;
+	margin-inline-end: 1em;
 }
 
 .navigationList a {
