@@ -8,20 +8,22 @@ description: Everything you need to know about IJSJES
 
 IJSJES is a blog to accelerate learning for intermediate-level engineers that write JavaScript through short blog posts.
 
-My life goal is to help people succeed. I can do that through blogging about my love for JavaScript.
+My life goal is to help people succeed. I can do that by blogging about my love for JavaScript.
 
 ## What a silly name!
 
-Yes. <span lang="nl">IJsjes</span> is the Dutch word for popsicles. It’s ponounced kind of like ice-yus. Why did I choose this? Well, it has the letters JS in it. Many more Dutch words include these letters and in these order, but <span lang="nl">ijsjes</span> had the best vibes by far. More than <span lang="nl">lijst</span> (list), <span lang="nl">prijs</span> (price and prize), <span lang="nl">bewijs</span> (proof), <span lang="nl">wijs</span> (wise), etc. So yeah, ice-yus.
+Yes. <span lang="nl">IJsjes</span> is the Dutch word for popsicles. It’s pronounced kind of like ice-yus. Why did I choose this? Well, it has the letters JS in it. Many more Dutch words include these letters and in these order, but <span lang="nl">ijsjes</span> had the best vibes by far. More than <span lang="nl">lijst</span> (list), <span lang="nl">prijs</span> (price and prize), <span lang="nl">bewijs</span> (proof), <span lang="nl">wijs</span> (wise), etc. So yeah, ice-yus.
 
 ## The future
 
-Honestly, this project is in it’s infancy so there’s no long term vision. I do have ideas on how to make IJSJES better.
+Honestly, this project is in its infancy so there’s no long-term vision. I do have ideas on how to make IJSJES better.
 
-Right now, the post count is so low, it’s not too overwhelming to browse through to find the posts you want to read. At some point, however, this might change. Maybe after 50, 100, or even a 1000 posts, someone might be overwhelmed and not bother. I’d hate for that to happen, so I might introduce passive methods of consumption. Options are:
+Right now, the post count is so low, that it’s not too overwhelming to browse through to find the posts you want to read. At some point, however, this might change. Maybe after 50, 100, or even 1000 posts, someone might be overwhelmed and not bother. I’d hate for that to happen, so I might introduce passive methods of consumption. Options are:
 
-- An newsletter that sends an article once a week to enable people to slowly catch up.
-- A Slack bot and/or Discord bot that DMs an article once or twice a week so businesses can train their juniors passively. I might ask a small fee for that.
+- A newsletter that sends an article once a week to enable people to slowly catch up.
+- A Slack bot and/or Discord bot that DMs an article once or twice a week so businesses can train their juniors passively. I might ask for a small fee for that.
+
+I’m very curious to learn about your ideas! Please [share them with me on Twitter](https://twitter.com/ijsjes_dev).
 
 ## About the author
 
