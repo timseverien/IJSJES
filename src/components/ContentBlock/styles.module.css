@@ -1,5 +1,12 @@
+.contentBlock {
+	--color-link-background: var(--color-accent);
+	--color-link-foreground: var(--color-black);
+	--color-link-background-active: var(--color-black);
+	--color-link-foreground-active: var(--color-accent);
+}
+
 .contentBlock a {
-	color: var(--color-secondary);
+	color: var(--color-link-foreground);
 	display: inline-block;
 	position: relative;
 }
@@ -8,7 +15,7 @@
 	display: block;
 	content: '';
 
-	background-color: var(--color-accent);
+	background-color: var(--color-link-background);
 	border-radius: 0.125em;
 
 	position: absolute;
@@ -24,13 +31,13 @@
 }
 
 .contentBlock a:hover {
-	color: var(--color-accent);
+	--color-link-foreground: var(--color-link-foreground-active);
 	text-decoration: underline;
 }
 
 .contentBlock a:hover::before {
+	--color-link-background: var(--color-link-background-active);
 	transform: rotate(-1deg);
-	background-color: var(--color-secondary);
 }
 
 .contentBlock a:where([href^="http://"], [href^="https://"])::after

@@ -4,8 +4,11 @@
 	--font-family-code: SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono,
 		monospace;
 
-	--color-primary: #fefefe;
-	--color-secondary: #2e2e2e;
+	--color-white: #fefefe;
+	--color-black: #2e2e2e;
+
+	--color-primary: var(--color-white);
+	--color-secondary: var(--color-black);
 	--color-accent: #f7df1c;
 
 	/* @link https://utopia.fyi/type/calculator?c=320,16,1.2,1140,24,1.25,10,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l */
