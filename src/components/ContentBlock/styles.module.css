@@ -32,3 +32,12 @@
 	transform: rotate(-1deg);
 	background-color: var(--color-secondary);
 }
+
+.contentBlock a:where([href^="http://"], [href^="https://"])::after
+{
+	display: inline-block;
+	content: '↗';
+	font-size: var(--step--2);
+	vertical-align: super;
+	margin-left: 0.25em;
+}

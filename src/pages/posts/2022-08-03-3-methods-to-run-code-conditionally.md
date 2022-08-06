@@ -189,7 +189,7 @@ if (showMonthlyMessage.has(month)) {
 
 ## 3. binary logic operators
 
-Once upon a time, binary logic operators (e.g. `&&` and `||`) were all the hype, until it wasn’t. Nowadays, it’s commonly used in [React](https://reactjs.org)’s JavaScript syntax extension, [JSX](https://reactjs.org/docs/introducing-jsx.html), which is available in various contexts outside React. I’m sure it’s confusing to non-JavaScript developers, but it’s actually pretty powerful. It requires a bit of JavaScript theory to understand — allow me to explain.
+Once upon a time, binary logic operators (e.g. `&&` and `||`) were all the hype, until it wasn’t. Nowadays, it’s commonly used in [React’s](https://reactjs.org) JavaScript syntax extension, [JSX](https://reactjs.org/docs/introducing-jsx.html), which is available in various contexts outside React. I’m sure it’s confusing to non-JavaScript developers, but it’s actually pretty powerful. It requires a bit of JavaScript theory to understand — allow me to explain.
 
 JavaScript uses [type coercion](https://developer.mozilla.org/en-US/docs/Glossary/Type_coercion) to allow developers to compare two values of different types (e.g. `42 == '42'`). This can behave somewhat unexpected and causes both [laughter](https://www.destroyallsoftware.com/talks/wat) and cries. Binary logic operators (e.g. `&&` and `||`) are used to check whether multiple boolean values meet criteria, but when given non-booleans, JavaScript coerces them into booleans. Typically, we refer to non-boolean values as _truthy_ and _falsy_ values, instead of `true` and `false`. For example, `0` is falsy, `1` is truthy, `null` is falsy and `{}` is truthy. So, how does this help us rewrite if-statements?
 

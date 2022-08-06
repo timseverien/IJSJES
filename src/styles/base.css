@@ -15,15 +15,6 @@ a:hover {
 	text-decoration: none;
 }
 
-a:where([href^="https://"])::after
-{
-	display: inline-block;
-	content: '↗';
-	font-size: var(--step--2);
-	vertical-align: super;
-	margin-left: 0.25em;
-}
-
 h1 {
 	font-size: var(--step-5);
 }
