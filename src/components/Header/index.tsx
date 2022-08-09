@@ -1,13 +1,11 @@
 import { FunctionalComponent, JSX } from 'preact';
-import { Icon } from '@components/Icon';
+import { Navigation } from '@components/Navigation';
 import ImageLogo from '../../assets/logo.svg';
 import styles from './styles.module.css';
 
-type Props = JSX.HTMLAttributes & {
-	requestUrl: URL;
-};
-
-export const Header: FunctionalComponent<Props> = ({ requestUrl }) => {
+export const Header: FunctionalComponent<{ requestUrl: URL }> = ({
+	requestUrl,
+}) => {
 	const links = [
 		{ path: '/', text: 'Posts' },
 		{ path: '/about', text: 'About' },
@@ -27,23 +25,7 @@ export const Header: FunctionalComponent<Props> = ({ requestUrl }) => {
 				/>
 			</a>
 
-			<nav class={styles.navigation}>
-				<ul class={styles.navigationList} role="list">
-					{links.map((link) => (
-						<li>
-							<a href={link.path} data-state-active={pathname === link.path}>
-								{link.text}
-							</a>
-						</li>
-					))}
-
-					<li class={styles.navigationListItemEnd}>
-						<a href="/rss.xml">
-							<Icon path="/images/icons/rss.svg" alt="RSS" />
-						</a>
-					</li>
-				</ul>
-			</nav>
+			<Navigation items={links} requestUrl={requestUrl} />
 		</header>
 	);
 };

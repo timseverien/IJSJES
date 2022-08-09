@@ -14,31 +14,3 @@
 	max-width: none;
 	width: calc(222 / 96 * var(--header-height));
 }
-
-.navigation {
-	flex-grow: 1;
-}
-
-.navigationList {
-	display: flex;
-	height: var(--header-height);
-	padding: 0;
-	margin: 0;
-	flex-direction: row;
-	gap: 1em;
-	align-items: center;
-}
-
-.navigationListItemEnd {
-	margin-inline-start: auto;
-	margin-inline-end: 1em;
-}
-
-.navigationList a {
-	font-weight: bold;
-	text-decoration: none;
-}
-
-.navigationList a[data-state-active] {
-	text-decoration: underline;
-}
