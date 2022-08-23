@@ -5,13 +5,13 @@
 	--color-link-foreground-active: var(--color-accent);
 }
 
-.contentBlock a {
+.contentBlock > p > a {
 	color: var(--color-link-foreground);
 	display: inline-block;
 	position: relative;
 }
 
-.contentBlock a::before {
+.contentBlock > p > a::before {
 	display: block;
 	content: '';
 
@@ -30,17 +30,17 @@
 	will-change: transform;
 }
 
-.contentBlock a:hover {
+.contentBlock > p > a:hover {
 	--color-link-foreground: var(--color-link-foreground-active);
 	text-decoration: underline;
 }
 
-.contentBlock a:hover::before {
+.contentBlock > p > a:hover::before {
 	--color-link-background: var(--color-link-background-active);
 	transform: rotate(-1deg);
 }
 
-.contentBlock a:where([href^="http://"], [href^="https://"])::after
+.contentBlock > p > a:where([href^="http://"], [href^="https://"])::after
 {
 	display: inline-block;
 	content: '↗';

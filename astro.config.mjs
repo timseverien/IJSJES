@@ -1,3 +1,4 @@
+import mdx from '@astrojs/mdx';
 import preact from '@astrojs/preact';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
@@ -7,6 +8,7 @@ import JSON5 from 'json5';
 // https://astro.build/config
 export default defineConfig({
 	integrations: [
+		mdx(),
 		preact(),
 		sitemap({
 			changefreq: 'monthly',
