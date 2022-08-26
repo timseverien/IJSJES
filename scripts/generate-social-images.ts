@@ -31,7 +31,7 @@ registerFont('./scripts/fonts/NanumPenScript-Regular.ttf', {
 	const context = canvas.getContext('2d');
 	const image = await loadImage(path.resolve('src/assets/logo.svg'));
 
-	const files = globSync('src/pages/posts/*.md');
+	const files = globSync('src/pages/posts/*.{md,mdx}');
 
 	for (const file of files) {
 		const content = fs.readFileSync(file).toString();
@@ -47,7 +47,7 @@ registerFont('./scripts/fonts/NanumPenScript-Regular.ttf', {
 		);
 
 		if (!fs.existsSync(directoryDestination)) {
-			return;
+			continue;
 		}
 
 		const fileDestination = path.resolve(
@@ -56,6 +56,10 @@ registerFont('./scripts/fonts/NanumPenScript-Regular.ttf', {
 		);
 
 		await new Promise<void>((resolve, reject) => {
+			console.log(
+				`Creating "${path.relative(DIRECTORY_DESTINATION, fileDestination)}"`,
+			);
+
 			generateSocialImage(context, data.title, {
 				designTokens: DESIGN_TOKENS,
 				fontFamily: 'Nanum Pen',
