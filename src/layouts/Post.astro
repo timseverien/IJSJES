@@ -1,6 +1,6 @@
 ---
 import DefaultLayout from '@layouts/Default.astro';
-import { getImageAbsoluteUrl } from '@functions/posts';
+import { createCategoryPath, getImageAbsoluteUrl } from '@functions/posts';
 import { ContentBlock } from '@components/ContentBlock';
 import { Flow } from '@components/Flow';
 import { SCHEMA_AUTHOR } from 'src/site';
@@ -39,9 +39,49 @@ const schema = {
 	title={content.title}
 >
 	<main>
-		<Flow component={ContentBlock}>
+		<div class="post__header">
 			<h1>{content.title}</h1>
+			{
+				Array.isArray(content.categories) && content.categories.length > 0 && (
+					<dl class="post__details">
+						<div>
+							<dt>Posted in:</dt>
+							<dd>
+								<ul class="post__category-list">
+									{content.categories.map((category: string) => (
+										<li>
+											<a href={createCategoryPath(category)}>{category}</a>
+										</li>
+									))}
+								</ul>
+							</dd>
+						</div>
+					</dl>
+				)
+			}
+		</div>
+
+		<Flow component={ContentBlock}>
 			<slot />
 		</Flow>
 	</main>
 </DefaultLayout>
+
+<style>
+	.post__header {
+		margin-block-end: var(--step-0);
+	}
+
+	.post__details > div {
+		display: flex;
+		gap: 0.25em;
+	}
+
+	.post__category-list {
+		display: flex;
+		padding: 0;
+		margin: 0;
+		gap: 1em;
+		list-style-type: none;
+	}
+</style>

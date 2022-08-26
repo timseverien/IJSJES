@@ -3,7 +3,7 @@ import style from './styles.module.css';
 
 type Props = JSX.HTMLAttributes & {
 	class?: string;
-	component: string | ((props: JSX.HTMLAttributes) => JSX.Element);
+	component?: any;
 };
 
 export const Flow: FunctionalComponent<Props> = ({

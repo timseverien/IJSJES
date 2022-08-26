@@ -1,12 +1,11 @@
 ---
 import DefaultLayout from '@layouts/Default.astro';
-import { ContentBlock } from '@components/ContentBlock';
-import { Flow } from '@components/Flow';
+import { VisuallyHidden } from '@components/VisuallyHidden';
 import { TITLE } from 'src/site';
 
-const { content } = Astro.props;
-const pageTitle = content.title;
-const pageDescription = content.description;
+const { category } = Astro.props;
+const pageTitle = category;
+const pageDescription = TITLE;
 
 const schema = {
 	'@context': 'https://schema.org',
@@ -19,5 +18,16 @@ const schema = {
 ---
 
 <DefaultLayout schema={schema} title={pageTitle} description={pageDescription}>
-	<Flow component={ContentBlock}><slot /></Flow>
+	<h1 class="category-title">
+		<VisuallyHidden>Posts tagged with:</VisuallyHidden>
+		{category}
+	</h1>
+
+	<slot />
 </DefaultLayout>
+
+<style>
+	.category-title {
+		margin-block-end: 1em;
+	}
+</style>

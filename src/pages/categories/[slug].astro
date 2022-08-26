@@ -1,0 +1,47 @@
+---
+import CategoryLayout from '@layouts/Category.astro';
+import {
+	getCategoriesFromPostList,
+	loadPosts,
+	loadPostsByCategory,
+} from '@functions/posts';
+import { PostList } from '@components/PostList';
+import { TITLE } from 'src/site';
+
+const pageTitle = `Design patterns - ${TITLE}`;
+
+export async function getStaticPaths() {
+	const posts = await loadPosts();
+	const categories = getCategoriesFromPostList(posts);
+	const paths = categories.map((category) => {
+		const postsForCategory = posts.filter((p) =>
+			p.frontmatter.categories?.includes(category.title),
+		);
+
+		return {
+			params: { slug: category.slug },
+			props: {
+				category: category.title,
+				posts: postsForCategory,
+			},
+		};
+	});
+
+	return paths;
+}
+
+const { category } = Astro.props;
+
+const schema = {
+	'@context': 'https://schema.org',
+	'@type': 'Blog',
+	headline: pageTitle,
+	mainEntityOfPage: { '@type': 'WebPage', '@id': Astro.url },
+	name: pageTitle,
+	url: Astro.url,
+};
+---
+
+<CategoryLayout schema={schema} category={category}>
+	<PostList posts={Astro.props.posts} />
+</CategoryLayout>
