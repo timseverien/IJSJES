@@ -1,6 +1,7 @@
 ---
 layout: '@layouts/Post.astro'
 title: 'What makes JavaScript so popular'
+description: 'JavaScript is one of the most popular languages today. But… why?'
 pubDate: 2022-08-06
 ---
 
