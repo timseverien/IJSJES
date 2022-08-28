@@ -5,6 +5,7 @@
 	flex-direction: row;
 	gap: 1em;
 	margin-block-end: var(--step-5);
+	margin-inline-end: var(--step-0);
 
 	text-transform: uppercase;
 }

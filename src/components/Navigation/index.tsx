@@ -16,8 +16,14 @@ export const Navigation: FunctionalComponent<{
 	return (
 		<nav class={styles.navigation}>
 			<ul class={styles.navigationList} role="list">
-				{items.map((link) => (
-					<li class={styles.navigationListItem}>
+				{items.map((link, index) => (
+					<li
+						class={`${styles.navigationListItem} ${
+							index === items.length - 1
+								? styles.navigationListItemLastPage
+								: null
+						}`}
+					>
 						<a
 							href={link.path}
 							data-state-active={pathname === link.path}
@@ -28,9 +34,14 @@ export const Navigation: FunctionalComponent<{
 					</li>
 				))}
 
-				<li class={styles.navigationListItemEnd}>
+				<li class={styles.navigationListItem}>
+					<a href="https://twitter.com/ijsjes_dev">
+						<Icon icon="twitter" alt="IJSJES on Twitter" />
+					</a>
+				</li>
+				<li class={styles.navigationListItem}>
 					<a href="/rss.xml">
-						<Icon path="/images/icons/rss.svg" alt="RSS" />
+						<Icon icon="rss" alt="RSS" />
 					</a>
 				</li>
 			</ul>

@@ -26,9 +26,8 @@
 	align-items: center;
 }
 
-.navigationListItemEnd {
-	margin-inline-start: auto;
-	margin-inline-end: 1em;
+.navigationListItemLastPage {
+	flex-grow: 1;
 }
 
 .navigationListItem {
