@@ -1,4 +1,9 @@
 .postList {
+	--link-background: transparent;
+	--link-foreground: var(--color-secondary);
+	--link-background-active: transparent;
+	--link-foreground-active: var(--color-secondary);
+
 	display: flex;
 	padding: 0;
 	margin: 0;

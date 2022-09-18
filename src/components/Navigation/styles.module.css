@@ -1,18 +1,18 @@
 .navigation {
-	--color-link-background: var(--color-accent);
-	--color-link-foreground: var(--color-black);
-	--color-link-background-active: var(--color-accent);
-	--color-link-foreground-active: var(--color-black);
+	--link-background: transparent;
+	--link-foreground: var(--color-black);
+	--link-background-active: transparent;
+	--link-foreground-active: var(--color-secondary);
 
 	flex-grow: 1;
 }
 
 @media (prefers-color-scheme: dark) {
 	.navigation {
-		--color-link-background: var(--color-accent);
-		--color-link-foreground: var(--color-accent);
-		--color-link-background-active: var(--color-accent);
-		--color-link-foreground-active: var(--color-black);
+		--link-background: transparent;
+		--link-foreground: var(--color-accent);
+		--link-background-active: transparent;
+		--link-foreground-active: var(--color-accent);
 	}
 }
 
@@ -36,19 +36,40 @@
 	--rotation-active: 0deg;
 }
 
+.navigationListItem:nth-child(n + 1) {
+	--rotation: 3deg;
+}
+
+.navigationListItem:nth-child(n + 2) {
+	--rotation: -1deg;
+}
+
+.navigationListItem:nth-child(n + 3) {
+	--rotation: 2deg;
+}
+
 .navigationLink {
 	display: inline-block;
 	position: relative;
-	color: var(--color-link-foreground);
 	font-weight: bold;
 	text-decoration: none;
+	background-color: transparent;
+}
+
+.navigationLink:where(:hover, [data-state-active]) {
+	color: var(--color-black);
+}
+
+.navigationLink:where(:hover, [data-state-active])::before {
+	--rotation: 0deg;
+	--transform-and-scale: translate(0) scale(1);
 }
 
 .navigationLink::before {
 	display: block;
 	content: '';
 
-	background-color: var(--color-link-background);
+	background-color: var(--color-accent);
 	border-radius: 0.125em;
 
 	position: absolute;
@@ -63,26 +84,4 @@
 
 	transition: color 0.2s, transform 0.2s;
 	will-change: color, transform;
-}
-
-.navigationLink:where(:hover, [data-state-active]) {
-	--color-link-foreground: var(--color-link-foreground-active);
-}
-
-.navigationLink:where(:hover, [data-state-active])::before {
-	--color-link-background: var(--color-link-background-active);
-	--rotation: 0deg;
-	--transform-and-scale: translate(0) scale(1);
-}
-
-.navigationListItem:nth-child(n + 1) {
-	--rotation: 3deg;
-}
-
-.navigationListItem:nth-child(n + 2) {
-	--rotation: -1deg;
-}
-
-.navigationListItem:nth-child(n + 3) {
-	--rotation: 2deg;
 }

@@ -1,50 +1,8 @@
-.contentBlock {
-	--color-link-background: var(--color-accent);
-	--color-link-foreground: var(--color-black);
-	--color-link-background-active: var(--color-black);
-	--color-link-foreground-active: var(--color-accent);
-}
-
-.contentBlock > p > a {
-	color: var(--color-link-foreground);
-	display: inline-block;
-	position: relative;
-}
-
-.contentBlock > p > a::before {
-	display: block;
-	content: '';
-
-	background-color: var(--color-link-background);
-	border-radius: 0.125em;
-
-	position: absolute;
-	left: -0.125em;
-	top: 0.25rem;
-	right: -0.125em;
-	bottom: 0.25rem;
-	z-index: -1;
-
-	transition: transform 0.2s;
-	transform: rotate(1deg);
-	will-change: transform;
-}
-
-.contentBlock > p > a:hover {
-	--color-link-foreground: var(--color-link-foreground-active);
-	text-decoration: underline;
-}
-
-.contentBlock > p > a:hover::before {
-	--color-link-background: var(--color-link-background-active);
-	transform: rotate(-1deg);
-}
-
-.contentBlock > p > a:where([href^="http://"], [href^="https://"])::after
+.contentBlock > a:where([href^="http://"], [href^="https://"])::after
 {
 	display: inline-block;
 	content: '↗';
 	font-size: var(--step--2);
 	vertical-align: super;
-	margin-left: 0.25em;
+	margin-left: 0.125em;
 }

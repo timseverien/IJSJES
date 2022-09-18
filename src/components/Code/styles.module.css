@@ -31,7 +31,7 @@
 
 .codeVersus {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(30ch, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(40ch, 1fr));
 	gap: var(--step--2);
 	justify-items: stretch;
 }

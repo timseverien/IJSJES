@@ -1,18 +1,30 @@
 body {
+	--link-background: transparent;
+	--link-background-active: var(--color-secondary);
+	--link-foreground: var(--color-secondary);
+	--link-foreground-active: var(--color-primary);
+	--link-decoration: underline;
+	--link-decoration-active: none;
+
 	background-color: var(--color-primary);
 	color: var(--color-secondary);
 	font-family: var(--font-family-text);
 	font-size: var(--step-0);
 	line-height: 1.6;
-	tab-size: 2em;
+	tab-size: 2;
 }
 
 a {
-	color: var(--color-secondary);
+	background-color: var(--link-background);
+	border-radius: 0.125em;
+	color: var(--link-foreground);
+	text-decoration: var(--link-decoration);
 }
 
 a:hover {
-	text-decoration: none;
+	--link-foreground: var(--link-foreground-active);
+	--link-background: var(--link-background-active);
+	--link-decoration: var(--link-decoration-active);
 }
 
 blockquote {
@@ -63,6 +75,13 @@ ol {
 
 code {
 	font-family: var(--font-family-code);
+}
+
+p > code {
+	padding-inline: 0.25em;
+	background-color: var(--code-background);
+	border-radius: 0.125em;
+	color: var(--code-foreground);
 }
 
 pre {

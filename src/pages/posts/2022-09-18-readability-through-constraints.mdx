@@ -1,0 +1,153 @@
+---
+layout: '@layouts/Post.astro'
+title: 'Code readability through constraints'
+description: 'There are many forms of readability.'
+pubDate: 2022-09-18
+draft: true
+catogries:
+	- Ideas
+---
+
+import { CodeFile, CodeVersus } from '@components/Code';
+
+We have many strategies to keep codebases readable, from making code a representation of a domain (Domain-Driven Design), to strategic whitespace placement, and everything in between. In this post I want to look into a specific strategy: by leveraging the constraints of syntax.
+
+In the post about [conditional code without if-statements](/posts/2022-08-03-3-methods-to-run-code-conditionally) we learned that we can achieve a goal (conditionally running code) in a multitude of ways, each with pros and cons. This is a common theme for programming in general. For any given project, we can often pick various languages, frameworks, tools, architectures, and syntax to attain one goal. But this is a JavaScript blog, so let’s talk about what options JavaScript gives us.
+
+## Constraints can be informative
+
+Which do you pick when you have to choose between `let`, `const`, and `var`? Do you know why?
+
+Imagine we’re scanning code and we run into either of the three snippets below. Note that the only difference between these snippets is the use of `const`, `let`, and `var`:
+
+<CodeVersus>
+```js
+async function logEventWithConst() {
+	if (FEATURE_FLAG) {
+		const date = Date.now();
+
+		// Code we skipped ‘reading’
+		// …
+
+		await logEvent(date);
+	}
+
+	// Code we haven’t ‘read’ yet
+	// …
+
+	await logEvent(date);
+}
+```
+```js
+async function logEventWithLet() {
+	if (FEATURE_FLAG) {
+		let date = Date.now();
+
+		// Code we skipped ‘reading’
+		// …
+
+		await logEvent(date);
+	}
+
+	// Code we haven’t ‘read’ yet
+	// …
+
+	await logEvent(date);
+}
+```
+```js
+async function logEventWithVar() {
+	if (FEATURE_FLAG) {
+		var date = Date.now();
+
+		// Code we skipped ‘reading’
+		// …
+
+		await logEvent(date);
+	}
+
+	// Code we haven’t ‘read’ yet
+	// …
+
+	await logEvent(date);
+}
+```
+</CodeVersus>
+
+Let’s assume `FEATURE_FLAG` is `true`, meaning the `if` statement will be executed. Additionally, let’s also assume these functions do not have any `return` statements. What can you tell about each snippet?
+
+Although the use of `const`, `let`, and `var` is a trivial difference, it does reveal some information useful for interpreting this code. For `logEventWithConst()`, we _know_ `logEvent()` is called with the return value of `Date.now()` at least once, as the variable `date` can’t be reassigned. As JavaScript allows us to reassign `let` and `var` variables, it creates uncertainty in the other snippets. To clear up that uncertainty, we must read more code.
+
+As for the second `logEvent()` call, we know in `logEventWithConst()` and `logEventWithLet()` that `date` must be a different variable, because `const` and `let` are block scoped. In other words, those declarations don’t bleed outside the `if` statement. Because `var` is function scoped, `logEventWithVar()` might call `LogEvent()` with the same value twice, unless reassigned, which can be done outside of the `if` statement.
+
+This example demonstrates that using the inherit constraints of syntax can make code predictable and thus easier to scan and read.
+
+## Improving scannability with constraints
+
+In the article I mentioned before, [3 methods to run code conditionally without if-statements
+](/posts/2022-08-03-3-methods-to-run-code-conditionally), I compared the `if` statement with the `switch` statement and briefly touched on how the constraints of a `switch` makes it easier to read. Compare the following two snippets:
+
+<CodeVersus>
+```js
+if (state === 'IDLE') {
+	// …
+} else if (state === 'RUNNING') {
+	// …
+} else if (state === 'JUMPING') {
+	// …
+}
+```
+```js
+switch (state) {
+	case 'IDLE':
+		// …
+		break;
+	case 'RUNNING':
+		// …
+		break;
+	case 'JUMPING':
+		// …
+		break;
+}
+```
+</CodeVersus>
+
+The if…else is much more compact in terms of lines of code, but harder to scan.
+
+Because `if` statements allows an arbitrary expressions in their parentheses, it’s quite powerful. Unfortunately, that flexibility makes it harder for us to scan. A strict inequality check is hard to spot when the list gets bigger! To make sure we understand the conditions of when a code block is executed, we need to read pretty much all conditions.
+
+The `switch` statement, on the other hand, performs equality checks implicitly. After reading the first line (`switch (state)`), we know every case is compared to `state` and we can continue by finding the case that is relevant for us solely by looking at each value. There are ways to use `switch`es with complex conditions, though those are rarely used and easy to spot.
+
+## Can we go too far?
+
+If you’re familiar with `const`, you may know that although values can’t be reassigned, it still allows for object mutation. For example:
+
+```js
+const configuration = { url: 'https://ijsjes.dev' };
+
+// …
+
+configuration.url = 'https://example.com';
+
+// …
+
+console.log(configuration.url); // logs "https://example.com"
+```
+
+The above code works just fine. Now we can freeze and seal the object to prevent that from happening, like so:
+
+```js
+const configuration = Object.freeze(Object.seal({ url: 'https://ijsjes.dev' }));
+
+// …
+```
+
+Arguably, this increases the constraints even further and we now know `configuration` won’t change — there’s no need to scan the codebase to verify the variable contains what we think it contains.
+
+I rarely see people do this.
+
+## Other benefits
+
+There are other benefits to preferring restrictive JavaScript syntax and features over less restrictive ones.
+
+One reason why people opt for `const` over `let` isn’t because of readability, but to avoid mistakes. By explicitly not letting a value be reassigned,
