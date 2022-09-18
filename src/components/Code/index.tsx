@@ -9,13 +9,15 @@ export const CodeFile: FunctionalComponent<{ filename?: string }> = ({
 	const id = `codefilename-${nanoid()}`;
 
 	return (
-		<div>
+		<div class={styles.codeFilenameContainer}>
 			{filename && (
 				<div id={id} class={styles.codeFilename}>
 					{filename}
 				</div>
 			)}
-			<div aria-describedby={id}>{children}</div>
+			<div class={styles.codeFilenameCode} aria-describedby={id}>
+				{children}
+			</div>
 		</div>
 	);
 };
@@ -33,4 +35,8 @@ export const CodeFileGroup: FunctionalComponent<{
 			<div>{children}</div>
 		</div>
 	);
+};
+
+export const CodeVersus: FunctionalComponent = ({ children }) => {
+	return <div class={styles.codeVersus}>{children}</div>;
 };

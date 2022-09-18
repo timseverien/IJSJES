@@ -1,13 +1,14 @@
 ---
 layout: '@layouts/Post.astro'
-title: 'Design patterns: Singleton'
+title: 'var vs. let vs. const'
 description: 'If we liberally interpret the Singleton pattern, we can make it much simpler than the object-oriented equivalent.'
 pubDate: 2022-08-26
+draft: true
 categories:
 	- Design patterns
 ---
 
-import { CodeFile } from '@components/Code';
+import { CodeFileGroup, CodeFile } from '@components/Code';
 
 Design patterns are programming patterns we can use to solve common challenges in our code. In 1994, the book “Design Patterns: Elements of Reusable Object-Oriented Software” was published and laid the foundation of many patterns we use today.
 
@@ -29,26 +30,27 @@ Using a JavaScript class, the implementation looks like this:
 	```js
 	let imageLoaderInstance = null;
 
-	export class ImageLoader {
-		#cache = new Map();
+    export class ImageLoader {
+    	#cache = new Map();
 
-		async loadImage(source) {
-			if (this.#cache.has(source)) {
-				return this.#cache.get(source);
-			}
+    	async loadImage(source) {
+    		if (this.#cache.has(source)) {
+    			return this.#cache.get(source);
+    		}
 
-			// Load image, write to cache, and return the image
-		}
+    		// Load image, write to cache, and return the image
+    	}
 
-		static getInstance() {
-			if (imageLoaderInstance) {
-				return imageLoaderInstance;
-			}
+    	static getInstance() {
+    		if (imageLoaderInstance) {
+    			return imageLoaderInstance;
+    		}
 
-			return new ImageLoader();
-		}
-	}
-	```
+    		return new ImageLoader();
+    	}
+    }
+    ```
+
 </CodeFile>
 
 ```js
@@ -68,8 +70,9 @@ The formal implementation can be greatly reduced by leveraging a built-in JavaSc
 	```js
 	console.log('Hello world!');
 
-	export const value = Math.random();
-	```
+    export const value = Math.random();
+    ```
+
 </CodeFile>
 
 ```js
@@ -88,14 +91,15 @@ Let’s rewrite the example from before as a JavaScript module.
 	```js
 	const cache = new Map();
 
-	export async function loadImage(source) {
-		if (cache.has(source)) {
-			return cache.get(source);
-		}
+    export async function loadImage(source) {
+    	if (cache.has(source)) {
+    		return cache.get(source);
+    	}
 
-		// Load image, write to cache, and return the image
-	}
-	```
+    	// Load image, write to cache, and return the image
+    }
+    ```
+
 </CodeFile>
 
 ```js

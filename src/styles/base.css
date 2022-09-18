@@ -70,10 +70,5 @@ pre {
 	padding: 1em;
 	margin: 0;
 	font-family: var(--font-family-code);
-}
-
-@media (min-width: 64em) {
-	pre {
-		font-size: var(--step--1);
-	}
+	font-size: var(--step--1);
 }

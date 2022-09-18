@@ -1,0 +1,162 @@
+---
+layout: '@layouts/Post.astro'
+title: 'Elements that make code readable'
+description: ''
+draft: true
+pubDate: 9999-08-26
+categories:
+	- Explainers
+---
+
+import { CodeFile, CodeVersus } from '@components/Code';
+
+- Predictability and bias
+- Scannability and skippability
+- Readability
+- Cognitive load
+
+Software development is often a team effort. If you’re working for a business, odds are someone else will see your code at some point in time. In fact, without getting into [Ship of Theseus](https://en.wikipedia.org/wiki/Ship_of_Theseus), you’re in a team with your future self — code hygiene also helps yourself understand your own code after it was purged from memory.
+
+The benefits are clear, and that’s why it’s common to write code to optimize for code readability. Most programs can be expressed in several ways syntactically, without noticeably impacting the program’s functionality, stability, or performance. In such cases, we definitely favour the most readable thing.
+
+What the “most readable thing” specifically is, is always subject for debate. The preferences of developers vary wildly.
+
+Let’s look at some elements of the broader sense of readability.
+
+## Predictability
+
+Predictability is a broad topic. Code can be predictable at architecture level, but also down to line level. I’m sure you’ve struggled with directory hierarchy at some point. Do we separate by type (e.g. components and functions) or by domain or feature? For now, let’s focus on actual code.
+
+Many code style choices produce predictability on various levels, and they matter a lot. For example, if your team opts to use a function declaration (`function myFn() { ... }`) to define functions, you’ll learn to search for that keyword when scanning a file of functions. If you don’t, it could either be a function declaration, function expression (`const myFn = function () { ... }`), or an arrow function expression (`const myFn => () => ...`), which makes scanning much harder. In other words: we learn to expect one style and adjust our reading to it.
+
+Another stylistic choice is to only `export` values at the end of a module. Whenever in a module, you’ll just _know_ to scroll to the bottom of a file to find what a module exports, removing the need to scan for `export` declarations that could be scattered across the file. Compare these examples:
+
+<CodeVersus>
+```js
+export function createUser() {
+	// ...
+}
+
+function checkIfUserCanBeDeleted() {
+	// ...
+}
+
+export function deleteUser() {
+	checkIfUserCanBeDeleted();
+	// ...
+}
+```
+```js
+function createUser() {
+	// ...
+}
+
+function checkIfUserCanBeDeleted() {
+	// ...
+}
+
+function deleteUser() {
+	checkIfUserCanBeDeleted();
+	// ...
+}
+
+export { createUser, deleteUser };
+```
+</CodeVersus>
+
+As I wrote before, predictable patterns can also emerge from architectural choices. For example, if we want to publish events to various channels (e.g. Discord and Slack), we can do that through hooks. Practically speaking, that allows us define functions that should be executed at specific events. As a result, various implementations are quite alike:
+
+<CodeFile filename="discord.js">
+```js
+export const PUBLISH_MESSAGE_HOOKS = {
+	handleUserCreation(client) { /* ... */ },
+	handleUserPayment(client) { /* ... */ },
+	handleUserDeletion(client) { /* ... */ },
+};
+```
+</CodeFile>
+
+<CodeFile filename="slack.js">
+```js
+export const PUBLISH_MESSAGE_HOOKS = {
+	handleUserCreation(client) { /* ... */ },
+	handleUserPayment(client) { /* ... */ },
+	handleUserDeletion(client) { /* ... */ },
+};
+```
+</CodeFile>
+
+Because the two files above are so similar, it becomes a pattern and predictable. Well, if you’re familar with such code, that is.
+
+Do you know that feeling when you browse a codebase for the first time and you’re struggling to interpret someone else’s patterns? It shows predictability is personal. It also changes over time — we get used to new patterns.
+
+## Scannability
+
+When browsing code, we spend little time reading every letter of every line. Instead, we scan, looking for the lines that are relevant to us.
+
+Many things influence scannability. Separating code into chunks or sections helps. Whitespace, comments, functions, there are a lot of options. Here are some examples:
+
+<CodeVersus>
+	<CodeFile filename="Ungrouped">
+		```js
+		async function getFormattedUsernames() {
+			const response = await fetch('/api/users');
+			const users = await response.json();
+			const usernames = users.map(u => u.name);
+			const formatter = new Intl.ListFormatter('en');
+			return formatter.format(usernames);
+		}
+		````
+	</CodeFile>
+
+	<CodeFile filename="Grouped with comments">
+		```js
+		async function getFormattedUsernames() {
+			// Fetch users
+			const response = await fetch('/api/users');
+			const users = await response.json();
+
+			// Aggregate usernames
+			const usernames = users.map(u => u.name);
+
+			// Format usernames
+			const formatter = new Intl.ListFormatter('en');
+			return formatter.format(usernames);
+		}
+		````
+	</CodeFile>
+
+	<CodeFile filename="Chunked with functions">
+		```js
+		async function fetchUsers() {
+			const response = await fetch('/api/users');
+			return response.json();
+		}
+
+		function getUserNameList(users) {
+			return users.map(u => u.name);
+		}
+
+		function formatUserNameList(usernameList) {
+			const formatter = new Intl.ListFormatter('en');
+			return formatter.format(usernames);
+		}
+
+		async function getFormattedUsernames() {
+			const users = await fetchUsers();
+			const usernames = getUserNameList(users);
+			return formatUserNameList(usernames);
+		}
+		````
+	</CodeFile>
+</CodeVersus>
+
+Given the examples above, which code would you prefer if you want to read this code from beginning to end? Which code would you prefer if we’d want to alter the `ListFormat` style? Would that style preference still apply if the number of lines increased tenfold?
+
+Regardless of your preference, these styles allows you to identify chunks of code and skip them if they’re not relevant. The comments and function names provide additional anchors to identify code without reading the implementation. So do class and file names.
+
+To scan code implies to skip code, and we can do that at a slightly lower level.
+
+## Conclusion
+
+All of the elements we’ve discussed are all very subjective. There’s no silver bullet or golden of rule here — dogmatism is destructive.
