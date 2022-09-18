@@ -1,0 +1,20 @@
+.form {
+	display: flex;
+	margin-block-end: var(--step-5);
+	gap: 0.5em;
+
+	border-radius: 0.125em;
+}
+
+.input {
+	display: block;
+	padding-block: var(--step--3);
+	padding-inline: var(--step--1);
+	flex: 1 0 auto;
+	border: 0;
+
+	background-color: var(--color-secondary);
+	color: var(--color-primary);
+	border-radius: 0.125em;
+	border-bottom: 1px solid var(--color-secondary);
+}

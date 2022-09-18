@@ -1,5 +1,6 @@
-import { FunctionalComponent, JSX } from 'preact';
+import { FunctionalComponent } from 'preact';
 import { Navigation } from '@components/Navigation';
+import { PostSearch } from '@components/PostSearch';
 import ImageLogo from '../../assets/logo.svg';
 import styles from './styles.module.css';
 
@@ -8,10 +9,9 @@ export const Header: FunctionalComponent<{ requestUrl: URL }> = ({
 }) => {
 	const links = [
 		{ path: '/', text: 'Posts' },
+		{ path: '/search', text: 'Search' },
 		{ path: '/about', text: 'About' },
 	];
-
-	const { pathname } = requestUrl;
 
 	return (
 		<header class={styles.header}>

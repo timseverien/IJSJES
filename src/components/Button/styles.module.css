@@ -1,0 +1,20 @@
+.button {
+	border: 0;
+	padding-block: var(--step--3);
+	padding-inline: var(--step--1);
+
+	background-color: var(--color-accent);
+	color: var(--color-black);
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.button:hover {
+	background-color: var(--color-secondary);
+}
+
+.button:active {
+	background-color: var(--color-accent);
+}

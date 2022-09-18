@@ -1,0 +1,27 @@
+---
+import DefaultLayout from '@layouts/Default.astro';
+import { loadPosts } from '@functions/posts';
+import { getSearchDataFromPostList } from '@functions/search';
+import { PostSearch } from '@components/PostSearch';
+import { VisuallyHidden } from '@components/VisuallyHidden';
+import { DESCRIPTION, TITLE } from 'src/site';
+
+const posts = await loadPosts();
+const postSearchData = getSearchDataFromPostList(posts);
+
+const pageTitle = `${DESCRIPTION} - ${TITLE}`;
+
+const schema = {
+	'@context': 'https://schema.org',
+	'@type': 'Blog',
+	headline: pageTitle,
+	mainEntityOfPage: { '@type': 'WebPage', '@id': Astro.url },
+	name: pageTitle,
+	url: Astro.url,
+};
+---
+
+<DefaultLayout schema={schema}>
+	<VisuallyHidden><h1>Search</h1></VisuallyHidden>
+	<PostSearch data={postSearchData} client:idle />
+</DefaultLayout>

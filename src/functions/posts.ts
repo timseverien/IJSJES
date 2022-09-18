@@ -7,6 +7,7 @@ export interface Category {
 }
 
 export interface Post {
+	rawContent: string;
 	url: string;
 
 	frontmatter: {
