@@ -10,13 +10,15 @@ catogries:
 
 import { CodeFile, CodeVersus } from '@components/Code';
 
-We have many strategies to keep codebases readable, from making code a representation of a domain (Domain-Driven Design), to strategic whitespace placement, and everything in between. In this post I want to look into a specific strategy: by leveraging the constraints of syntax.
+We have many strategies to keep codebases readable, from making code a representation of a domain (Domain-Driven Design), to strategic whitespace placement, and everything in between. In this post I want to look into a specific strategy: by leveraging the constraints.
 
-In the post about [conditional code without if-statements](/posts/2022-08-03-3-methods-to-run-code-conditionally) we learned that we can achieve a goal (conditionally running code) in a multitude of ways, each with pros and cons. This is a common theme for programming in general. For any given project, we can often pick various languages, frameworks, tools, architectures, and syntax to attain one goal. But this is a JavaScript blog, so let’s talk about what options JavaScript gives us.
+In the post about [conditional code without if-statements](/posts/2022-08-03-3-methods-to-run-code-conditionally) we learned that we can make code conditional in a multitude of ways, each with pros and cons. This is a common theme for programming in general. We can often pick various languages, frameworks, tools, architectures, and syntax to attain a goal. But this is a JavaScript blog, so let’s talk about what options syntactical options JavaScript gives us.
 
-## Constraints can be informative
+Let’s look at some examples.
 
-Which do you pick when you have to choose between `let`, `const`, and `var`? Do you know why?
+## `const`, `let`, and `var`
+
+`const`, `let`, and `var` are the three keywords to declare variables, and they’re all slightly different. Which do you pick and why?
 
 Imagine we’re scanning code and we run into either of the three snippets below. Note that the only difference between these snippets is the use of `const`, `let`, and `var`:
 
@@ -26,13 +28,13 @@ async function logEventWithConst() {
 	if (FEATURE_FLAG) {
 		const date = Date.now();
 
-		// Code we skipped ‘reading’
+		// Code we didn’t read
 		// …
 
 		await logEvent(date);
 	}
 
-	// Code we haven’t ‘read’ yet
+	// Code we didn’t read
 	// …
 
 	await logEvent(date);
@@ -43,13 +45,13 @@ async function logEventWithLet() {
 	if (FEATURE_FLAG) {
 		let date = Date.now();
 
-		// Code we skipped ‘reading’
+		// Code we didn’t read
 		// …
 
 		await logEvent(date);
 	}
 
-	// Code we haven’t ‘read’ yet
+	// Code we didn’t read
 	// …
 
 	await logEvent(date);
@@ -60,13 +62,13 @@ async function logEventWithVar() {
 	if (FEATURE_FLAG) {
 		var date = Date.now();
 
-		// Code we skipped ‘reading’
+		// Code we didn’t read
 		// …
 
 		await logEvent(date);
 	}
 
-	// Code we haven’t ‘read’ yet
+	// Code we didn’t read
 	// …
 
 	await logEvent(date);
@@ -74,15 +76,19 @@ async function logEventWithVar() {
 ```
 </CodeVersus>
 
-Let’s assume `FEATURE_FLAG` is `true`, meaning the `if` statement will be executed. Additionally, let’s also assume these functions do not have any `return` statements. What can you tell about each snippet?
+Let’s assume `FEATURE_FLAG` is `true`, meaning the `if` statement will be executed. Additionally, let’s also assume these functions do not contain a `return` statement. Lastly, consider this production code that’s free of syntax errors. What can you tell about each snippet?
 
-Although the use of `const`, `let`, and `var` is a trivial difference, it does reveal some information useful for interpreting this code. For `logEventWithConst()`, we _know_ `logEvent()` is called with the return value of `Date.now()` at least once, as the variable `date` can’t be reassigned. As JavaScript allows us to reassign `let` and `var` variables, it creates uncertainty in the other snippets. To clear up that uncertainty, we must read more code.
+Although the use of `const`, `let`, and `var` is a trivial difference, it does reveal some information useful for interpreting this code.
 
-As for the second `logEvent()` call, we know in `logEventWithConst()` and `logEventWithLet()` that `date` must be a different variable, because `const` and `let` are block scoped. In other words, those declarations don’t bleed outside the `if` statement. Because `var` is function scoped, `logEventWithVar()` might call `LogEvent()` with the same value twice, unless reassigned, which can be done outside of the `if` statement.
+For example, the first `await logEvent(date)` expression is ambiguous in `logEventWithLet()` and `logEventWithVar()`. Because `let` and `var` can be reassigned, we have to read more code to find out what value is sent to `logEvent()`. In `logEventWithConst()`, however, we can be sure that `logEvent()` receives `Date.now()`, as `const` _can’t_ be reassigned.
 
-This example demonstrates that using the inherit constraints of syntax can make code predictable and thus easier to scan and read.
+As for the second `logEvent()` call, we know in `logEventWithConst()` and `logEventWithLet()` that `date` must be a different variable than the one visible in the snippet, because `const` and `let` are block scoped. In other words, those declarations don’t bleed outside the `if` statement. Because `var` is function scoped, `logEventWithVar()` might call `LogEvent()` with the same value twice, unless reassigned either in or after the `if` statement.
 
-## Improving scannability with constraints
+Lastly, let’s talk about potential bugs. The second `logEvent()` call in the `const` and `let` examples _must_ refer to another `date` variable, assuming each snippet is syntactically sound. `logEventWithVar()`, however, might start throw a `ReferenceError` once `FEATURE_FLAG` is set to `false`. To be sure `date` isn’t declared elsewhere, we’ll have to read additional code.
+
+This example shows how a trivial difference, like the use of `const`, `let`, and `var`, impacts the scannability of code. Despite skipping some parts of code, we’re able to make assumptions about what the code does. Of these, `var` gives the most ‘freedom’ in terms of where we declare them and whether they are assigned new values. This inheritly comes with uncertainty we can only take away by reading more code.
+
+## `if` v.s. `switch`
 
 In the article I mentioned before, [3 methods to run code conditionally without if-statements
 ](/posts/2022-08-03-3-methods-to-run-code-conditionally), I compared the `if` statement with the `switch` statement and briefly touched on how the constraints of a `switch` makes it easier to read. Compare the following two snippets:
@@ -112,15 +118,15 @@ switch (state) {
 ```
 </CodeVersus>
 
-The if…else is much more compact in terms of lines of code, but harder to scan.
+Because `if` statements allow arbitrary expressions in their parentheses, it’s quite powerful. Unfortunately, that flexibility makes it harder for us to scan. In a big `if` statement, we can’t be sure they all contain strict equality (`===`) checks until we’ve read them all. There might be a strict _inequality_ (`!==`) check in there, which is hard to spot!
 
-Because `if` statements allows an arbitrary expressions in their parentheses, it’s quite powerful. Unfortunately, that flexibility makes it harder for us to scan. A strict inequality check is hard to spot when the list gets bigger! To make sure we understand the conditions of when a code block is executed, we need to read pretty much all conditions.
+The `switch` statement, on the other hand, performs equality checks implicitly. After reading the first line (`switch (state)`), we know every case is compared to `state` and we can continue by finding the case that is relevant for us solely by looking at each value.
 
-The `switch` statement, on the other hand, performs equality checks implicitly. After reading the first line (`switch (state)`), we know every case is compared to `state` and we can continue by finding the case that is relevant for us solely by looking at each value. There are ways to use `switch`es with complex conditions, though those are rarely used and easy to spot.
+So, are `switch`es better? Well, it’s complicated. Thanks to [fall-through](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch#breaking_and_fall-through), multiple `case` clauses can be executed — something an if…else can’t do. This means that after finding the case that’s relevant for you, you have to figure out whether other clauses fall-through. Long story short: `if` v.s. `switch` comes down to scannability v.s. cognitive load.
 
 ## Can we go too far?
 
-If you’re familiar with `const`, you may know that although values can’t be reassigned, it still allows for object mutation. For example:
+If you’re familiar with `const`, you may know that although values can’t be reassigned, it still allows object mutation. For example:
 
 ```js
 const configuration = { url: 'https://ijsjes.dev' };
@@ -134,20 +140,20 @@ configuration.url = 'https://example.com';
 console.log(configuration.url); // logs "https://example.com"
 ```
 
-The above code works just fine. Now we can freeze and seal the object to prevent that from happening, like so:
+The above code works just fine, unfortunately. In many cases, we don’t want to be able to modify an object (like a config) after creation. We can use `Object.freeze()` and `Object.seal()` to prevent mutation and extention respectively, like so:
 
 ```js
-const configuration = Object.freeze(Object.seal({ url: 'https://ijsjes.dev' }));
-
-// …
+const configuration = Object.seal(Object.freeze({ url: 'https://ijsjes.dev' }));
 ```
 
-Arguably, this increases the constraints even further and we now know `configuration` won’t change — there’s no need to scan the codebase to verify the variable contains what we think it contains.
+Arguably, this increases the constraints even further and we’re now confident `configuration` won’t change. We could do this with any other object, like domain models and API response to make sure their contents represent reality and not an intermediate state that exists nowhere except for the program’s memory.
 
-I rarely see people do this.
+Practically, this means adding many `Object.freeze()` and `Object.seal()` calls and many instances where we’d have to clone objects to mutate and then freeze them again, only to persue and enforce the philosophical idea of truth. Is that worth it? It might be!
 
-## Other benefits
+It certainly improves certainty, but will it improve readability? Probably not, as we’ll write quite some code to work around immutable objects. So as always, there’s a balance.
+
+## Other benefits of leveraging constraints
 
 There are other benefits to preferring restrictive JavaScript syntax and features over less restrictive ones.
 
-One reason why people opt for `const` over `let` isn’t because of readability, but to avoid mistakes. By explicitly not letting a value be reassigned,
+We’ve already covered certainty in [`const`, `let`, and `var`](#const-let-and-var), where `const` is the most restrictive and helps us make assertions about code, whereas `var` gives us uncertainty as it’s most flexible.
