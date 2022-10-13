@@ -25,6 +25,14 @@
 	/* Based on Cobalt2 theme */
 	--code-background: #193549;
 	--code-foreground: #e1efff;
+
+	--content-margin: var(--step-1);
+}
+
+@media (min-width: 32em) {
+	:root {
+		--content-margin: var(--step-5);
+	}
 }
 
 @media (prefers-color-scheme: dark) {

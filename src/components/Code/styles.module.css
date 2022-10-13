@@ -1,6 +1,7 @@
 .codeFilenameContainer {
 	display: flex;
 	flex-direction: column;
+	margin-inline: calc(-1 * var(--content-margin));
 }
 
 .codeFilename {
@@ -18,6 +19,7 @@
 
 .codeFilenameCode > pre {
 	height: 100%;
+	margin-inline: 0;
 }
 
 .codeFilenameList {
@@ -31,7 +33,12 @@
 
 .codeVersus {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(40ch, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(36ch, 1fr));
 	gap: var(--step--2);
 	justify-items: stretch;
+	margin-inline: calc(-1 * var(--content-margin));
+}
+
+.codeVersus > pre {
+	margin-inline: 0;
 }

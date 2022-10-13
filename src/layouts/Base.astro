@@ -45,10 +45,21 @@ const twitterCardType = pageImage ? 'summary_large_image' : 'summary';
 	</head>
 
 	<body>
-		<slot />
+		<div class="wrapper">
+			<slot />
+		</div>
 
-		{schema && (
-			<script type="application/ld+json" set:html={JSON.stringify(schema)} />
-		)}
+		{
+			schema && (
+				<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+			)
+		}
 	</body>
 </html>
+
+<style>
+	.wrapper {
+		max-width: 90ch;
+		margin-inline: auto;
+	}
+</style>
