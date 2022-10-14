@@ -1,24 +1,24 @@
 ---
 layout: '@layouts/Post.astro'
 title: 'The benefits of constraints'
-description: 'Constraints has a negative association, but I think constraints in code can be a good thing.'
+description: 'Constraints have a negative connotation, but constraints in code can be a good thing.'
 pubDate: 2022-09-18
 draft: true
-catogries:
-	- Ideas
+categories:
+	- Thoughts
 ---
 
 import { CodeFile, CodeVersus } from '@components/Code';
 
-{/* We have many strategies to keep codebases readable, from making code a representation of a domain (Domain-Driven Design), to strategic whitespace placement, and everything in between. In this post I want to look into a specific strategy: by leveraging the constraints. */}
+In the post [3 methods to run code conditionally without if-statements](/posts/2022-08-03-3-methods-to-run-code-conditionally), we learned that we can make code conditional in a multitude of ways, each with pros and cons. Considering various options and picking what’s right for that context is something programmers do all the time.
 
-In the post [3 methods to run code conditionally without if-statements](/posts/2022-08-03-3-methods-to-run-code-conditionally), we learned that we can make code conditional in a multitude of ways, each with pros and cons. Considering them and picking what’s right for that context is something programmers do all the time.
+Many factors influence these decisions: readability, maintainability, performance, resilience, scalability, preference, bundle size, and more. Some of these (e.g. readability, maintainability, resilience) fit into a broader way of looking at software: by considering constraints.
 
-When we face another situation where we have to choose one option out of many, it’s tempting to choose what is most flexible, but there’s a case to be made for the opposite. In this article, I want to look at some benefits of constraints in code.
+Let’s look at some examples to see how that works!
 
 ## Scannibility
 
-In the article I mentioned before, we compared the `if` statement with the `switch` statement and briefly touched on how the constraints of a `switch` makes it easier to read. Compare the following two snippets:
+In the article I mentioned before, we compared the `if` statement with the `switch` statement and briefly touched on how a `switch` makes it easier to read as it performs an implicit equality check, whereas `if` statements supports any expression. Compare the following two snippets:
 
 <CodeVersus>
 ```js
@@ -147,11 +147,11 @@ function multiply(a, b) {
 }
 ```
 
-## Preventing bugs
+Unfortunately, all of the above won’t be noticable until someone runs into an issue at runtime.
 
-We can’t talk about constraints without mentioning type safety. Yes, I’m talking about TypeScript.
+## Preventing runtime bugs
 
-Although complex TypeScript types are hard to think of and write, and even harder to read, it does avoid type bugs and silly mistakes. Let’s reiterate the example from before:
+Although complex TypeScript types are hard to think of, write, and even harder to read, it does help us avoid type bugs and silly mistakes. Let’s reiterate the example from before:
 
 ```ts
 function multiply(a: number, b: number) {
@@ -159,56 +159,78 @@ function multiply(a: number, b: number) {
 }
 ```
 
-But, TypeScript does much more than making sure values are numbers — it’s also particularly useful for string values.
+If we’d pass a string to `multiply()`, TypeScript just refuses to compile to JavaScript. Additionally, most editors have TypeScript support built-in or available via plugins and will happily let us know when we make a mistake.
+
+TypeScript also allows us to define a type for a set of string values. Consider this example:
 
 ```ts
 type ArithmeticOperator = '+' | '-' | '*' | '/';
 
-function createFormula(a: number, b: number, operator: ArithmeticOperator) {
+function computeExpression(a: number, b: number, operator: ArithmeticOperator) {
+	// …
+}
+```
+
+If we’d call `computeExpression()` with invalid values (e.g. `computeExpression(1, 2, '?')`), TypeScript won’t compile.
+
+## Correctness
+
+Because TypeScript allows us to add constraints as we please, we can introduce some to increase the certainty of correctness of the software.
+
+Imagine an application with regular and admin users, both with string IDs. With JavaScript, there’s nothing that prevents us from accidentally mixing these IDs up, like so:
+
+```js
+async function loadAdminUser(id) {
 	// …
 }
 
-createFormula(1, 2, '?'); // Will cause build error
+async function loadUser(id) {
+	// …
+}
+
+const adminUserId = '123';
+const userId = '123';
+
+// Oops, we’re mixing up IDs!
+loadAdminUser(userId);
+loadUser(adminUserId);
 ```
 
+Despite incorrect, this code works fine. There will be no warnings or errors, only unexpected behaviour when testing the application.
 
+To avoid this, we can use nominal typing: assigning unique types to these strings so we don’t mix them up. Let’s rewrite the above code:
 
+```ts
+// These types add an unused property solely to make them distinguishable
+type AdminUserId = { _adminUserId: string } & string;
+type UserId = { _userId: string } & string;
 
+async function loadAdminUser(id: AdminUserId) {
+  // …
+}
 
+async function loadUser(id: UserId) {
+  // …
+}
 
+const adminUserId = '123' as AdminUserId;
+const userId = '123' as UserId;
 
+// These function calls are invalid and will cause compile errors
+loadAdminUser(userId);
+loadUser(adminUserId);
 
-
-
-
-{/* ## Other benefits of constraints
-
-There are other benefits to preferring restrictive JavaScript syntax and features over less restrictive ones.
-
-We’ve already covered certainty in [`const`, `let`, and `var`](#const-let-and-var), where `const` is the most restrictive and helps us make assertions about code, whereas `var` gives us uncertainty as it’s most flexible.
-
-As code gets more constrained, there’s a smaller chance for . If we can’t reassign `const`, we can’t change data type, either.
-
-## Can we go too far?
-
-If you’re familiar with `const`, you may know that although values can’t be reassigned, it still allows object mutation. For example:
-
-```js
-const configuration = { url: 'https://ijsjes.dev' };
-
-configuration.url = 'https://example.com';
-
-console.log(configuration.url); // logs "https://example.com"
+// These are fine
+loadAdminUser(adminUserId);
+loadUser(userId);
 ```
 
-The above code works just fine, unfortunately. In many cases, we don’t want to be able to modify an object (like a config) after creation. We can use `Object.freeze()` and `Object.seal()` to prevent mutation and extension respectively, like so:
+Note that this doesn’t _ensure_ correctness. We can still cast values incorrectly, which break our software again. At least it’s explicit, meaning mistakes are much easier to spot.
 
-```js
-const configuration = Object.seal(Object.freeze({ url: 'https://ijsjes.dev' }));
-```
+## Concluding
 
-Arguably, this increases the constraints even further and we’re now confident `configuration` won’t change. We could do this with any other object, like domain models and API response to make sure their contents represent reality and not an intermediate state that exists nowhere except for the program’s memory.
+As demonstrated, by looking at the constraints of our options, we can improve the readability and predictability, and reduced the chance of introducing bugs. It’s definitely an interesting and insightful way of looking at software.
 
-Practically, this means adding many `Object.freeze()` and `Object.seal()` calls and many instances where we’d have to clone objects to mutate and then freeze them again, only to persue and enforce the philosophical idea of truth. Is that worth it? It might be!
+Note that more constraints isn’t necessarily better. The `Object.freeze()` and `Object.seal()` example from before is a good one. We could, technically, use those functions to make every object immutable. As a consequence, we’d introduce a lot of code to create and modify objects, not to mention that frequently creating and discarding objects can have a major performance impact.
 
-It certainly improves certainty, but will it improve readability? Probably not, as we’ll write quite some code to work around immutable objects. So as always, there’s a balance. */}
+As always, there’s a balance. Sometimes you want flexibility, sometimes you don’t.
