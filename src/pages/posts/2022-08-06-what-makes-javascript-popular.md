@@ -3,6 +3,8 @@ layout: '@layouts/Post.astro'
 title: 'What makes JavaScript so popular'
 description: 'JavaScript is one of the most popular languages today. But… why?'
 pubDate: 2022-08-06
+categories:
+	- Thoughts
 ---
 
 JavaScript is an immensely popular language. In fact, according to Stack Overflow’s [2022 Developer Survey](https://survey.stackoverflow.co/2022/#technology-most-popular-technologies), it ranks first! TypeScript, a superset of JavaScript, isn’t far behind. What makes JS — a language that’s often subject to ridicule — so popular?
