@@ -9,13 +9,13 @@ categories:
 
 import { CodeFile, CodeVersus } from '@components/Code';
 
-Sooner or later, every developer ends with principles. One of these principles, which is quite popular, is immutability. Unfortunately, it impacts performance in a way that it can be unpractical to stick to the principle strictly.
+Sooner or later, every developer ends up following principles to help writing good code. One common principle, that’s popular in JavaScript, is immutability. Unfortunately, it impacts performance in a way that it can be unpractical to stick to the principle strictly.
 
 ## What is immutability?
 
-Immutability is the idea that objects shouldn’t be mutated. Unlike primitives like numbers and strings, objects can have multiple references to the same object.
+Immutability is the idea that objects shouldn’t be mutated. Unlike primitives like numbers and strings, multiple variables can refer to one and the same object.
 
-This means that multiple variables can refer to the same data. This means that modifying the object through one reference, modifies it for all, because they’re just references to the same object. Consider this example:
+If multiple variables can refer to the same data, that means that modifying the object through one reference, modifies it for all. Consider this example:
 
 ```js
 const myObject1 = { foo: 'bar' };
@@ -26,7 +26,7 @@ myObject1.foo = 'Hello World';
 console.log(myObject2.foo); // Prints: "Hello World"
 ```
 
-This can lead to unexpected results. If we follow the immutability principle, we choose to create new objects instead of modifying existing ones. Consider the following examples:
+This behaviour can lead to unexpected results. If we follow the immutability principle, we choose creating new objects over modifying existing ones. Take a look at the examples below:
 
 <CodeVersus>
 <CodeFile filename="Mutation">
@@ -48,7 +48,7 @@ function updateQuantity(product, quantity) {
 </CodeFile>
 </CodeVersus>
 
-The first example mutates the `product` object. The second example creates a new object by copying the `product` object into a new one via the spread syntax (`...`) and overwriting the `quantity` property in one fell swoop.
+The first example mutates the `product` object. The second example creates a copy of `product` into a new object via the spread syntax (`...`) and overwrites the `quantity` property in one fell swoop.
 
 Regardless of our preference in terms of readability, immutability can avoid very confusing bugs. Now, how does this affect performance?
 
@@ -59,7 +59,7 @@ In various languages, like C/C++, programmers must allocate memory before they c
 
 Conveniently, JavaScript, or rather the JavaScript engine, allocates memory for us. Whenever we concatenate strings or create a new object, more memory is allocated to store those values.
 
-Consider the following (deliberately naive and inefficient) example:
+Consider the code below:
 
 ```js
 function getRandomAverage() {
@@ -77,7 +77,7 @@ This function generates a bunch of random numbers and returns the average. With 
 
 When this function is done and the result value is returned, this means we have 10 doubles in memory we no longer need because we have no references to those values.
 
-The excess memory stays until the _garbage collector_ collects these unreferenced values and releases their memory. The more memory is allocated, the more values need to be checked.
+The excess memory stays until the _garbage collector_ collects these unreferenced values and releases their associated memory. The more memory is allocated, the more values need to be checked.
 
 Now that we know how a JavaScript engine manages memory, let’s get back to immutability.
 
@@ -107,7 +107,7 @@ function updateQuantity(product, quantity) {
 
 One of these allocates much more memory than the other. Can you tell which?
 
-By now, you must be wondering, _how much_ impact does it have? A quick benchmark on [jsbench.me](https://jsbench.me) showed creating new objects is roughly 90% slower, regardless whether the object was created via an object literal with spread (like the example above) or with `Object.assign()`.
+By now, you must be wondering, _how much_ impact does it have? A quick benchmark on [jsbench.me](https://jsbench.me) shows creating new objects is roughly 90% slower, regardless whether the object was created via an object literal with spread (like the example above) or with `Object.assign()`.
 
 Benchmarks are an oversimplification of reality, though. Despite being ~90% slower, it still achieved 95 million operations per second on my machine. Although that’s a massive amount, low-end mobile devices could show noticeable lag when you’re aggregating a dataset, for example.
 
@@ -115,7 +115,7 @@ Benchmarks are an oversimplification of reality, though. Despite being ~90% slow
 
 Immutability is still a perfectly fine principle to stick to, but we can apply it less strictly and can think of scopes in which mutation is allowed. For example, we can permit it within functions, as long it doesn’t produce side effects.
 
-Let’s say we have a list of individual page visits, and we want to turn that into a list of distinct pages with a count. Let’s compare the implementations of two functions following strictly immutable and loosely immutable principles, respectively:
+Let’s say we have a list of individual page visits, and we want to turn that into a list of distinct pages with a count. Let’s compare the implementations of two functions following strictly immutable and loose immutable principles, respectively:
 
 <CodeVersus>
 <CodeFile filename="Strictly immutable">
