@@ -39,6 +39,7 @@
 	margin-inline: calc(-1 * var(--content-margin));
 }
 
-.codeVersus > pre {
+.codeVersus > pre,
+.codeVersus > .codeFilenameContainer {
 	margin-inline: 0;
 }
