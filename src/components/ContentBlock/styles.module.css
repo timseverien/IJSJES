@@ -4,5 +4,5 @@
 	content: '↗';
 	font-size: var(--step--2);
 	vertical-align: super;
-	margin-left: 0.125em;
+	margin-inline-start: 0.125em;
 }

@@ -3,5 +3,5 @@
 }
 
 .flow :global(> * + *) {
-	margin-top: 1em;
+	margin-block-start: 1em;
 }
