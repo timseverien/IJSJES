@@ -3,6 +3,8 @@ layout: '@layouts/Post.astro'
 title: '3 methods to run code conditionally without if-statements'
 description: 'Did you know you don’t need if-statements to conditionally run code? Let’s look at three alternatives!'
 pubDate: 2022-08-03
+categories:
+	- Tips
 ---
 
 In every codebase, you’ll have conditions in which you want to run or skip code. Conventionally, if…else-statements are one of the first things we learn in JavaScript, specifically to conditionally run code.
