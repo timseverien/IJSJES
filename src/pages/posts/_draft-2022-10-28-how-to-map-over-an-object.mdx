@@ -1,0 +1,109 @@
+---
+layout: '@layouts/Post.astro'
+title: 'How to map over an object'
+description: 'With the map() function, we can create a new array by processing each individual item. Can this be done with objects?'
+pubDate: 2022-10-28
+draft: true
+categories:
+	- Basics
+---
+
+import { CodeFile, CodeVersus } from '@components/Code';
+
+The `Array.prototype.map()` function is commonly used to create a new array by processing each item. Unfortunately, there’s no such thing for object! How do we replace every item in an object like we can for arrays?
+
+## Object entries
+
+In JavaScript, there’s another format to represent objects. We call these _entries_. They are a list of `[key, value]` tuples.
+
+Imagine we have an object of product IDs and product information. This allows us to easily lookup a specific product by calling `productsById[productId]`, for example. This can be expressed like so:
+
+```js
+{
+	'00c1': { id: '00c1', price: 8 },
+	'00c2': { id: '00c2', price: 42 },
+}
+```
+
+The entries equivalent is below. Note the different brackets (`[]` vs `{}`):
+
+```js
+[
+	['00c1', { id: '00c1', price: 8 }],
+	['00c2', { id: '00c2', price: 42 }],
+]
+```
+
+We can convert an object using `Object.entries()`, like so:
+
+```js
+const productsById = {
+	'00c1': { id: '00c1', price: 8 },
+	'00c2': { id: '00c2', price: 42 },
+};
+
+const entries = Object.entries(object);
+```
+
+Inversely, we can convert entries to an object with `Object.fromEntries()`:
+
+```js
+const entries = [
+	['00c1', { id: '00c1', price: 8 }],
+	['00c2', { id: '00c2', price: 42 }],
+];
+
+const productsById = Object.fromEntries(entries);
+```
+
+Since `Object.entries()` returns an array of `[key, value]` pairs, we can use any array function we need: `map()`, `filter()`, `some()`, etc. Let’s say we’re having a discount event with 10% off and need to update all prices without modifying `productsById`. Let’s do this step by step.
+
+First, we want to convert the `productsById` object to a list of entries. We do that with `Object.entries(productsById)`.
+
+This returns an array, so we can immediately call `map()` on the return value:
+
+```js
+Object.entries(productsById)
+	.map(...);
+```
+
+The `map()` callback gets called with a `[key, value]` pair. I typically choose to use array destructuring to assign both items to variables. This produces:
+
+```js
+Object.entries(productsById)
+	.map(([productId, productInformation]) => ...);
+```
+
+We want the `map()` callback function to produce a new `[key, value]` pair, essentially creating a new entries array. To avoid accidentally modifying values in `productsById`, we create a copy of `productInformation` and override `price`:
+
+```js
+Object.entries(productsById)
+	.map(([productId, productInformation]) => [
+			// Key, which is unchanged
+			productId,
+
+			// Value, which is a copy of `productInformation` with new `price`
+			{
+				...productInformation,
+				price: priceFactor * productInformation.price,
+			}
+		]);
+```
+
+The code above produces a new list of entries. We can convert that back into an object by calling `Object.fromEntries(...)`. All of this produces the following code:
+
+```js
+const priceFactor = 0.9; // decrease of 10%
+
+const productByIdWithDiscount = Object.fromEntries(
+	Object.entries(productsById)
+		.map(([productId, productInformation]) => [productId, {
+			...productInformation,
+			price: priceFactor * productInformation.price,
+		}])
+);
+```
+
+## Duplicate keys
+
+
