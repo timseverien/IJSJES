@@ -106,4 +106,64 @@ const productByIdWithDiscount = Object.fromEntries(
 
 ## Duplicate keys
 
+We know that object keys are unique. A list of entries, however, doesn’t have that constraint — it can have duplicate keys:
 
+```js
+[
+	['key', 1],
+	['key', 2],
+]
+```
+
+When we convert a list of entries to an object, we’re bound to lose some data. `Object.fromEntries()` follows the order of the entry list. When there are multiple entries with the same key, the object will receive the value of the last item of corresponding key.
+
+```js
+const obj = Object.fromEntries([
+	['key', 1],
+	['key', 2],
+]);
+```
+
+The value of `obj.key` will be 2.
+
+## Use a for-in or for-of loop
+
+In the last article, [When principles degrade performance — the memory problem of immutability](/posts/2022-10-25-when-principles-degrade-performance-the-memory-problem-of-immutability), we briefly touched on immutability, the performance impact, and a liberal take on immutability that allows us to avoid creating excessive memory load. We can apply the same principle here.
+
+Instead of mapping over an object, we can construct a new one. Let’s revisit the example from before:
+
+```js
+const productByIdWithDiscount = {};
+
+for (const [productId, productInformation] of Object.entries(productsById)) {
+	productByIdWithDiscount[productId] = {
+		...productInformation,
+		price: priceFactor * productInformation.price,
+	};
+}
+```
+
+It might not be an elegant one-liner and might cause eyetwitches with those who dogmatically cling on immutability, but it’s a quite intuitive option that doesn’t require us to transform our data structure back and forth.
+
+Although hidden from us, `Object.entries()` and `Object.fromEntries()` internally enumerates over the data. Therefore, note that `Object.entries()`, `map()`, and finally a `Object.fromEntries()` causes three enumerations! With a for-of we can reduce that to two — `Object.entries()` call and the loop itself. We can cut that down to one with a for-in loop:
+
+```js
+const productByIdWithDiscount = {};
+
+for (const productId in productsById) {
+	const productInformation = productsById[productId];
+
+	productByIdWithDiscount[productId] = {
+		...productInformation,
+		price: priceFactor * productInformation.price,
+	};
+}
+```
+
+I want to emphasise performance optimisations like these are not noticable for appropriately sized lists. They only will when we’re processing a lot of data. It’s just a fun observation and good to be aware of for that one time when we do need to squeeze out every millisecond we can get.
+
+## Conclusion
+
+Interestingly, we _can’t_ quite map over an Object. Not in the same way `Array.prototype.map()` lets us. The `Object.entries()` + `Object.fromEntries()` approach still makes us call `map()` on an array of items that resembles a key-value pair.
+
+Nonetheless, these are some of the ways we ‘map’ over an object.
