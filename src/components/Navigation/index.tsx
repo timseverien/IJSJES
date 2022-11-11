@@ -35,7 +35,12 @@ export const Navigation: FunctionalComponent<{
 				))}
 
 				<li class={styles.navigationListItem}>
-					<a href="https://twitter.com/ijsjes_dev">
+					<a href="https://mastodon.social/@ijsjes" rel="me">
+						<Icon icon="mastodon" alt="IJSJES on Mastodon" />
+					</a>
+				</li>
+				<li class={styles.navigationListItem}>
+					<a href="https://twitter.com/ijsjes_dev" rel="me">
 						<Icon icon="twitter" alt="IJSJES on Twitter" />
 					</a>
 				</li>

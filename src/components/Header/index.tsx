@@ -11,8 +11,6 @@ export const Header: FunctionalComponent<{ requestUrl: URL }> = ({
 		{ path: '/about', text: 'About' },
 	];
 
-	const { pathname } = requestUrl;
-
 	return (
 		<header class={styles.header}>
 			<a href="/">
