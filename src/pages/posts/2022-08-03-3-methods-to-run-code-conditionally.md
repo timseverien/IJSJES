@@ -93,19 +93,6 @@ if (
 }
 ```
 
-We can do the above with comma-separated values, too:
-
-```js
-switch (stockInformation.state) {
-	case ('NOT_IN_STOCK', 'NOT_IN_STOCK_AND_NEVER_WILL_BE'):
-		showMessage('Sorry, we don’t have this item in stock.');
-		break;
-
-	default:
-		showMessage('Order now!');
-}
-```
-
 Lastly, there’s more magic to `switch` statements. Take a moment to consider this code:
 
 ```js
