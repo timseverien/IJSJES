@@ -105,7 +105,7 @@ function updateQuantity(product, quantity) {
 </CodeFile>
 </CodeVersus>
 
-One of these allocates much more memory than the other. Can you tell which?
+One of these allocates much more memory than the other. Can you tell which? The first example only updates a reference, while the other creates a completely new object based off `product`. As a result, the latter allocates more memory.
 
 By now, you must be wondering, _how much_ impact does it have? A quick benchmark on [jsbench.me](https://jsbench.me) shows creating new objects is roughly 90% slower, regardless whether the object was created via an object literal with spread (like the example above) or with `Object.assign()`.
 
@@ -172,7 +172,7 @@ function getPageVisitCount(pageVisits) {
 
 In the strictly immutable example, many objects will be created simply for the sake of calling it immutable. Realistically, the objects we’re creating aren’t exposed outside the `reduce()` callback function. In other words: it’s safe to mutate any object that doesn’t live outside `getPageVisitCount()`. This is why the second implementation is just as safe and many times more performant.
 
-Again, if `pageVisits` is a list of two or three items, there’s virtually no difference in performance. However, if it’s a list of thousands or millions of items, the difference will become noticeable.
+If `pageVisits` is a list of two or three items, there’s virtually no difference in performance. However, if it’s a list of thousands or millions of items, the difference definitely will be noticeable.
 
 Note how this relates to other principles. Imagine we’ve decided to prefer many small functions over larger ones. Let’s rewrite the code from before to adhere to that principle:
 
