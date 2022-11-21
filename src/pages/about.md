@@ -6,7 +6,7 @@ description: Everything you need to know about IJSJES
 
 # About IJSJES
 
-IJSJES is a blog to accelerate learning for intermediate-level engineers that write JavaScript.
+IJSJES is a blog to accelerate learning for beginner and intermediate-level engineers that write JavaScript.
 
 ## What a silly name!
 

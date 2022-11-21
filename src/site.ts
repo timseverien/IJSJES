@@ -1,5 +1,5 @@
 export const TITLE = 'IJSJES';
-export const DESCRIPTION = 'Tips for intermediate JavaScript developers';
+export const DESCRIPTION = 'Get better at JavaScript';
 
 export const SCHEMA_AUTHOR = {
 	'@type': 'Person',
