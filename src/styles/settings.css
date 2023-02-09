@@ -25,6 +25,8 @@
 	/* Based on Cobalt2 theme */
 	--code-background: #193549;
 	--code-foreground: #e1efff;
+	--code-title-background: #14222a;
+	--code-title-foreground: var(--color-white);
 
 	--content-margin: var(--step-1);
 }
