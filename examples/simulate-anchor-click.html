@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div data-card>
+			<h1><a href="/simulate-anchor-click.html">Card title</a></h1>
+			<p>Card content</p>
+			<a href="https://ijsjes.dev">External link</a>
+		</div>
+
+		<script>
+			for (const card of document.querySelectorAll('[data-card]')) {
+				const anchor = card.querySelector('a');
+
+				if (anchor) {
+					card.addEventListener('click', (event) => {
+						anchor.dispatchEvent(
+							new MouseEvent('click', {
+								// Prevent bubbling to avoid retrigging the card click event handler
+								bubbles: false,
+								altKey: event.altKey,
+								ctrlKey: event.ctrlKey,
+								metaKey: event.metaKey,
+								shiftKey: event.shiftKey,
+							}),
+						);
+					});
+				}
+			}
+		</script>
+	</body>
+</html>
