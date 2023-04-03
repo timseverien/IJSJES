@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
-import { FunctionalComponent } from 'preact';
+import { FunctionalComponent, createRef } from 'preact';
+import { useEffect, useState } from 'preact/hooks';
 import styles from './styles.module.css';
 
 export const CodeFile: FunctionalComponent<{ filename?: string }> = ({
@@ -33,6 +34,48 @@ export const CodeFileGroup: FunctionalComponent<{
 				))}
 			</ul>
 			<div>{children}</div>
+		</div>
+	);
+};
+
+export const CodeVariantList: FunctionalComponent<{
+	variants: string[];
+}> = ({ children, variants }) => {
+	const [activeVariant, setActiveVariant] = useState(0);
+	const codeContainer = createRef<HTMLDivElement>();
+
+	useEffect(() => {
+		if (!codeContainer.current) return;
+
+		console.log(codeContainer.current);
+
+		for (let i = 0; i < codeContainer.current.children.length; i++) {
+			const child = codeContainer.current.children[i];
+
+			i !== activeVariant
+				? child.setAttribute('hidden', 'hidden')
+				: child.removeAttribute('hidden');
+		}
+	}, [activeVariant, codeContainer]);
+
+	return (
+		<div>
+			<ul>
+				{variants.map((variant: string, index: number) => (
+					<li>
+						<button
+							role="tab"
+							aria-selected={activeVariant === index ? 'true' : 'false'}
+							aria-controls="tabpanel-id"
+							id="tab-id"
+							onClick={() => setActiveVariant(index)}
+						>
+							{variant} {activeVariant === index && <>(active)</>}
+						</button>
+					</li>
+				))}
+			</ul>
+			<div ref={codeContainer}>{children}</div>
 		</div>
 	);
 };
