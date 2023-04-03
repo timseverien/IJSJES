@@ -1,0 +1,150 @@
+---
+layout: '@layouts/Post.astro'
+title: 'Simulate a link click (with keys)'
+description: ''
+pubDate: 2023-01-01
+draft: true
+categories:
+	- Front-end web development
+---
+
+import { VisuallyHidden } from '@components/VisuallyHidden';
+
+I frequently find myself making blocks of content link to another page. There are several ways to do that, each with pros and cons. In this article, we’ll look at various approaches to make a block of content navigate to another page.
+
+## 1. Wrapping content in an anchor
+
+Let’s make a card navigate to another page by wrapping it in an anchor tag.
+
+```html
+<a href="/category/typescript">
+	<div class="card">
+		<h2>TypeScript</h2>
+		<p>Learn all about TypeScript!</p>
+	</div>
+</a>
+```
+
+Although intuitive, there are some problems with this approach.
+
+First, not all elements permit anchor child elements. For example, a `<table>` element doesn’t permit arbitrary child elements, so wrapping an entire row in an anchor element (`<a><tr>…</tr></a>`) won’t work.
+
+A more severe issue is that screen readers will read all content of the `<a>` aloud. Not only is that a waste of time, but it might be confusing. This can be mitigated with an `aria-label`, but [the first rule of ARIA](https://www.w3.org/TR/using-aria/#rule1) is to avoid using it.
+
+Given these flaws, I’d avoid this approach at all times.
+
+## 2. Faux link with CSS
+
+Another approach is to place a, what I call, faux link. It works by adding a pseudo-element to the anchor that’s positioned across the clickable area.
+
+```html
+<div class="card">
+	<h2><a href="/category/typescript">TypeScript</a></h2>
+	<p>Learn all about TypeScript!</p>
+</div>
+
+<style>
+.card { position: relative; }
+
+.card a::after {
+	display: block;
+	content: '';
+
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+</style>
+```
+
+The `position: relative` on `.card` creates a boundary for the clickable area. The `::after` pseudo-element is placed over that area with `position: absolute` and related properties.
+
+When you already have elements with `relative` or `absolute` positioning, they might interfere with this approach. Additionally, if you have other clickable items within the container, the faux link might interfere with those. You can `position: relative` and `z-index` your way out of that.
+
+This makes a robust solution to the problem, but can cause coupling with containers. If you aim to write clean and isolated components, this approach isn’t pretty.
+
+I’m sure at this point you might wonder: “isn’t this a JavaScript blog”? Yes, yes it is, which brings it to the final option.
+
+## 3. <VisuallyHidden>Simulate link click</VisuallyHidden> With JavaScript
+
+With JavaScript, we can progressively enhance the card to be clickable and simulate a click on the anchor:
+
+```js
+for (const card of document.querySelectorAll('.card')) {
+	const anchor = card.querySelector('a');
+
+	if (anchor) {
+		card.addEventListener('click', () => {
+			window.location.href = anchor.href;
+		});
+	}
+}
+```
+
+The above code seeks all cards, finds the first anchor in the card, and registers a click handler. When the card is clicked, we set the URL to whatever the anchor would set it to.
+
+This naive implementation breaks important functionality. If we click the link while pressing some keys, we can open the link in a new tab, or save the link destination as a file, etc. To fix that, instead of updating the URL, we can simulate the anchor click like so:
+
+```js
+for (const card of document.querySelectorAll('.card')) {
+	const anchor = card.querySelector('a');
+
+	if (anchor) {
+		card.addEventListener('click', (event) => {
+			anchor.dispatchEvent(new MouseEvent('click', {
+				// Prevent bubbling to avoid retrigging the card click event handler
+				bubbles: false,
+
+				altKey: event.altKey,
+				ctrlKey: event.ctrlKey,
+				metaKey: event.metaKey,
+				shiftKey: event.shiftKey,
+			}));
+		});
+	}
+}
+```
+
+By choosing JavaScript, this functionality only works when JavaScript is enabled and works. Luckily, this approach makes it a Progressive Enhancement. There’s still a link if JavaScript doesn’t work — it just works a little better when it does.
+
+Being a Progressive Enhancement, this approach is very resilient. It also is fairly straightforward, so future us will understand what’s happening.
+
+### 3.1. <VisuallyHidden>Simulate link click</VisuallyHidden> In React
+
+The above code might be foreign to you if you’ve never dealt with vanilla JavaScript before. For convenience, let’s rewrite the above into a React component. Here’s how to simulate an anchor click in React:
+
+```tsx
+export const TypeScriptCard = () => {
+	const anchorRef = createRef();
+
+	const onCardClick = (event) => {
+		anchorRef.current.dispatchEvent(new MouseEvent('click', {
+			// Prevent bubbling to avoid retrigging the card click event handler
+			bubbles: false,
+			altKey: event.altKey,
+			ctrlKey: event.ctrlKey,
+			metaKey: event.metaKey,
+			shiftKey: event.shiftKey,
+		}));
+	}
+
+	return (
+		<div class="card" onClick={onCardClick}>
+			<h2><a href="/category/typescript" ref={anchorRef}>TypeScript</a></h2>
+			<p>Learn all about TypeScript!</p>
+		</div>
+	);
+};
+```
+
+Observant readers might notice that only the `dispatchEvent()` call and `MouseEvent` constructor call are similar to the vanilla JavaScript example.
+
+## In summary
+
+There are various ways to make a block of content act as a link. We looked at wrapping content with an anchor, creating a faux link with a CSS pseudo-element, and simulating a link click with JavaScript.
+
+Wrapping content in an anchor element easily done wrong. The other two methods, however, are more resilient and easier to work with. Although the use of CSS or JavaScript is rarely preferred over using (valid) HTML, this is one of those cases.
+
+We also learned how we can preserve key combinations when clicking a link with JavaScript by copying the original `MouseEvent` and passing it to `anchor.dispatchEvent()`.

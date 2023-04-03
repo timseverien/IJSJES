@@ -1,0 +1,119 @@
+---
+layout: '@layouts/Post.astro'
+title: 'Simulate a link click with JavaScript'
+description: 'TODO'
+pubDate: 2023-01-02
+draft: true
+categories:
+	- Basics
+---
+
+import { VisuallyHidden } from '@components/VisuallyHidden';
+import { CodeVariantList } from '@components/Code';
+
+We link to other pages all the time. When the clickable content is more than a handful of words, wrapping that in an anchor rarely is the best approach. How do we make big chunks of content link to another page?
+
+## Why wrapping content in an anchor element is bad
+
+Let’s say we have a card with a title, image, and description:
+
+<CodeVariantList variants={['Vanilla', 'React']} client:load>
+```js
+console.log('foo');
+```
+```js
+console.log('foo');
+```
+</CodeVariantList>
+
+{/* <div>
+```html
+<div class="card">
+</div>
+```
+</div>
+<div>
+```tsx~
+export const Card = () => {};
+```
+</div> */}
+
+With JavaScript we can progressively enhance the card to be clickable and simulate a click on the anchor:
+
+```js
+for (const card of document.querySelectorAll('.card')) {
+	const anchor = card.querySelector('a');
+
+	if (anchor) {
+		card.addEventListener('click', () => {
+			window.location.href = anchor.href;
+		});
+	}
+}
+```
+
+The above code seeks all cards, finds the first anchor in the card, and registers a click handler. When the card is clicked, we set the URL to whatever the anchor would set it to.
+
+This naive implementation breaks important functionality. If we click the link while pressing some keys, we can open the link in a new tab, or save the link destination as a file, etc. To fix that, instead of updating the URL, we can simulate the anchor click like so:
+
+```js
+for (const card of document.querySelectorAll('.card')) {
+	const anchor = card.querySelector('a');
+
+	if (anchor) {
+		card.addEventListener('click', (event) => {
+			anchor.dispatchEvent(new MouseEvent('click', {
+				// Prevent bubbling to avoid retrigging the card click event handler
+				bubbles: false,
+
+				altKey: event.altKey,
+				ctrlKey: event.ctrlKey,
+				metaKey: event.metaKey,
+				shiftKey: event.shiftKey,
+			}));
+		});
+	}
+}
+```
+
+By choosing JavaScript, this functionality only works when JavaScript is enabled and works. Luckily, this approach makes it a Progressive Enhancement. There’s still a link if JavaScript doesn’t work — it just works a little better when it does.
+
+Being a Progressive Enhancement, this approach is very resilient. It also is fairly straightforward, so future us will understand what’s happening.
+
+### <VisuallyHidden>Simulate link click</VisuallyHidden> In React
+
+The above code might be foreign to you if you’ve never dealt with vanilla JavaScript before. For convenience, let’s rewrite the above into a React component. Here’s how to simulate an anchor click in React:
+
+```tsx
+export const TypeScriptCard = () => {
+	const anchorRef = createRef();
+
+	const onCardClick = (event) => {
+		anchorRef.current.dispatchEvent(new MouseEvent('click', {
+			// Prevent bubbling to avoid retrigging the card click event handler
+			bubbles: false,
+			altKey: event.altKey,
+			ctrlKey: event.ctrlKey,
+			metaKey: event.metaKey,
+			shiftKey: event.shiftKey,
+		}));
+	}
+
+	return (
+		<div class="card" onClick={onCardClick}>
+			<h2><a href="/category/typescript" ref={anchorRef}>TypeScript</a></h2>
+			<p>Learn all about TypeScript!</p>
+		</div>
+	);
+};
+```
+
+Observant readers might notice that only the `dispatchEvent()` call and `MouseEvent` constructor call are similar to the vanilla JavaScript example.
+
+## In summary
+
+There are various ways to make a block of content act as a link. We looked at wrapping content with an anchor, creating a faux link with a CSS pseudo-element, and simulating a link click with JavaScript.
+
+Wrapping content in an anchor element easily done wrong. The other two methods, however, are more resilient and easier to work with. Although the use of CSS or JavaScript is rarely preferred over using (valid) HTML, this is one of those cases.
+
+We also learned how we can preserve key combinations when clicking a link with JavaScript by copying the original `MouseEvent` and passing it to `anchor.dispatchEvent()`.
