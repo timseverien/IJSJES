@@ -12,29 +12,29 @@
   },
   "dependencies": {
     "modern-css-reset": "^1.4.0",
-    "nanoid": "^4.0.0"
+    "nanoid": "^5.0.7"
   },
   "devDependencies": {
-    "@astrojs/mdx": "^0.14.0",
-    "@astrojs/preact": "^1.2.0",
-    "@astrojs/rss": "^2.0.0",
-    "@astrojs/sitemap": "^1.0.0",
-    "@trivago/prettier-plugin-sort-imports": "^4.0.0",
-    "@types/glob": "^8.0.1",
-    "@types/jest": "^29.2.6",
-    "@types/node": "^18.11.18",
-    "astro": "^1.9.2",
-    "canvas": "^2.9.3",
+    "@astrojs/mdx": "^3.1.4",
+    "@astrojs/preact": "^3.5.1",
+    "@astrojs/rss": "^4.0.7",
+    "@astrojs/sitemap": "^3.1.6",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/glob": "^8.1.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^22.4.1",
+    "astro": "^4.14.3",
+    "canvas": "^2.11.2",
     "front-matter": "^4.0.2",
-    "glob": "^8.1.0",
-    "jest": "^29.3.1",
+    "glob": "^11.0.0",
+    "jest": "^29.7.0",
     "json5": "^2.2.3",
-    "preact": "^10.11.3",
-    "prettier-plugin-astro": "^0.7.2",
+    "preact": "^10.23.2",
+    "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-import-sort": "^0.0.7",
-    "slugify": "^1.6.5",
-    "ts-jest": "^29.0.5",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.9.4"
+    "slugify": "^1.6.6",
+    "ts-jest": "^29.2.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
   }
 }
