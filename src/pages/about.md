@@ -33,4 +33,4 @@ I’m very curious to learn about your ideas! Please share them with me [on Mast
 
 ## About the author
 
-Hello there! My name is Tim and I’ve been writing JavaScript for 17 years, of which 13 professionally. For most of that period, I’ve been writing about JavaScript on and off on [SitePoint](https://www.sitepoint.com) and [my own blog](https://timseverien.com). My life goal is to help people succeed. I can do that by blogging about my love for JavaScript.
+Hello there! My name is Tim and I’ve been writing JavaScript for 17 years, of which 13 professionally. For most of that period, I’ve been writing about JavaScript on and off on [SitePoint](https://www.sitepoint.com) and [my own blog](https://timseverien.com).
