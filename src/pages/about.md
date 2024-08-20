@@ -29,7 +29,7 @@ Right now, the post count is so low, that it’s not too overwhelming to browse 
 - **A newsletter** that sends an article once a week to enable people to slowly catch up.
 - **A Slack bot and/or Discord bot** that DMs an article once or twice a week so businesses can train their juniors passively. I might ask for a small fee for that.
 
-I’m very curious to learn about your ideas! Please share them with me [on Mastodon](https://mastodon.social/@ijsjes) or [on Twitter](https://twitter.com/ijsjes_dev).
+I’m very curious to learn about your ideas! Please share them with me [on Mastodon](https://mastodon.social/@ijsjes).
 
 ## About the author
 
